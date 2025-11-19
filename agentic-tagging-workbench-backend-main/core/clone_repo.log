@@ -1,0 +1,162 @@
+2025-09-22 12:22:35,735 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-22 12:22:35,738 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test
+2025-09-22 12:22:35,738 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-22 12:22:36,418 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test'...
+2025-09-22 12:22:36,418 | INFO | Clone complete at: /home/sgadal/ATTagger/Test
+2025-09-22 12:23:46,322 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-22 12:23:46,324 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 12:23:46,324 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-22 12:23:46,932 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-22 12:23:46,932 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 12:33:51,529 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-22 12:33:51,531 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 12:33:51,531 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-22 12:33:52,210 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-22 12:33:52,210 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 12:58:12,702 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-22 12:58:12,705 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 12:58:12,705 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-22 12:58:13,479 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-22 12:58:13,479 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 13:02:01,514 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-22 13:02:01,515 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 13:02:01,515 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-22 13:02:02,206 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-22 13:02:02,206 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 15:32:27,339 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-22 15:32:27,350 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 15:32:27,351 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-22 15:32:28,347 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-22 15:32:28,348 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 18:45:32,569 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-22 18:45:32,572 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 18:45:32,573 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-22 18:45:33,201 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-22 18:45:33,201 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 19:05:09,768 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-22 19:05:09,769 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 19:05:09,769 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-22 19:05:10,393 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-22 19:05:10,393 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 19:12:18,622 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-22 19:12:18,624 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 19:12:18,624 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-22 19:12:19,083 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-22 19:12:19,083 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 19:16:43,757 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-22 19:16:43,759 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 19:16:43,759 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-22 19:16:44,266 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-22 19:16:44,266 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 19:52:23,190 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-22 19:52:23,201 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-22 19:52:23,202 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-22 19:52:23,846 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-22 19:52:23,846 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 11:03:54,943 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-23 11:03:54,946 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 11:03:54,947 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-23 11:03:55,762 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-23 11:03:55,763 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 11:54:01,461 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-23 11:54:01,470 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 11:54:01,470 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-23 11:54:02,484 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-23 11:54:02,484 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 11:55:23,431 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-23 11:55:23,441 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 11:55:23,442 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-23 11:55:24,026 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-23 11:55:24,027 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 12:02:48,249 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-23 12:02:48,251 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 12:02:48,251 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-23 12:02:48,869 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-23 12:02:48,869 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 12:04:17,863 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-23 12:04:17,866 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 12:04:17,867 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-23 12:04:18,898 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-23 12:04:18,898 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 12:43:12,042 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-23 12:43:12,048 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 12:43:12,049 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-23 12:43:12,725 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-23 12:43:12,726 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 12:44:13,013 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-23 12:44:13,014 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 12:44:13,015 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-23 12:44:13,585 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-23 12:44:13,586 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 13:37:46,510 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-23 13:37:46,517 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 13:37:46,518 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-23 13:37:47,168 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-23 13:37:47,169 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 13:38:41,972 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-23 13:38:41,974 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 13:38:41,974 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-23 13:38:42,527 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-23 13:38:42,527 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 15:17:13,155 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-23 15:17:13,165 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 15:17:13,165 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-23 15:17:14,109 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-23 15:17:14,110 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 15:18:28,349 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-23 15:18:28,351 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-23 15:18:28,351 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-23 15:18:29,023 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-23 15:18:29,023 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-24 10:36:27,950 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-24 10:36:27,957 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-24 10:36:27,958 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-24 10:36:28,872 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-24 10:36:28,873 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-24 10:38:07,397 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-24 10:38:07,401 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-24 10:38:07,402 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-24 10:38:07,972 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-24 10:38:07,972 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-24 11:11:21,878 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-24 11:11:21,885 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-24 11:11:21,885 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-24 11:11:22,602 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-24 11:11:22,602 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-24 11:13:06,650 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-24 11:13:06,653 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-24 11:13:06,653 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-24 11:13:07,243 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-24 11:13:07,243 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-24 11:18:40,358 | INFO | Default branch for SushilaGadal91/ResidentPortal is main
+2025-09-24 11:18:40,360 | INFO | Cloning https://github.com/SushilaGadal91/ResidentPortal (branch: main) into /home/sgadal/ATTagger/Test/ResidentPortal
+2025-09-24 11:18:40,360 | INFO | Running: git clone --depth 1 --branch main https://github.com/SushilaGadal91/ResidentPortal.git /home/sgadal/ATTagger/Test/ResidentPortal  | cwd=/home/sgadal/ATTagger/AI_Tagging_Sys/core
+2025-09-24 11:18:40,960 | INFO | STDERR:
+Cloning into '/home/sgadal/ATTagger/Test/ResidentPortal'...
+2025-09-24 11:18:40,961 | INFO | Clone complete at: /home/sgadal/ATTagger/Test/ResidentPortal

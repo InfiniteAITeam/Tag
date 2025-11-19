@@ -1,0 +1,17 @@
+flowchart TD
+    A[User (Web UI)] -->|Initiate Action| B[Frontend (React)]
+    B -->|API Request| C[Backend (FastAPI)]
+    C --> D{Route Request}
+    D -->|Tech Spec| E[techSpecGenerate.py]
+    D -->|Tag Suggestion| F[taggingSuggestion.py]
+    D -->|Apply Tags| G[applyTaggingAgent.py]
+    D -->|Rollback| H[rollback_changes.py]
+    E --> I[OpenAI API / Prompts]
+    F --> I
+    G --> J[Codebase / Outputs]
+    H --> J
+    I --> J
+    J --> K[core/outputs/ (JSON, MD, XLSX, logs)]
+    K -->|Results| L[Backend (FastAPI)]
+    L -->|Response| B
+    B -->|Display| A

@@ -1,0 +1,29 @@
+{
+  "naming": {
+    "selection": "Select_{object}",
+    "continue": "Continue_{object}",
+    "skip": "Skip_{object}",
+    "generic": "{action}_{object}"
+  },
+  "dictionary": {
+    "today": "Today",
+    "make a rent payment": "MakeARentPayment",
+    "request maintenance": "RequestMaintenance",
+    "start a new application": "StartANewApplication",
+    "more options": "MoreOptions",
+    "back": "Back",
+    "exit": "Exit",
+    "monthly payment": "MonthlyPayment",
+    "set up autopay": "SetUpAutoPay",
+    "continue": "Continue"
+  },
+  "action_aliases": {
+    "select": "selection",
+    "choose": "selection",
+    "tap continue": "continue",
+    "press continue": "continue",
+    "skip": "skip"
+  },
+  "value_joiner": "_",
+  "variable": "eVar27"
+}

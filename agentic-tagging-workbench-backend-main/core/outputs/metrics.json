@@ -1,0 +1,38 @@
+{
+  "items_processed": 6,
+  "failed": 0,
+  "files_modified": 3,
+  "backups_created": 3,
+  "by_extension": {
+    ".js": 6
+  },
+  "by_directory": {
+    "/home/sgadal/ATTagger/Test/ResidentPortal/src/pages": 6
+  },
+  "updates": [
+    {
+      "file": "/home/sgadal/ATTagger/Test/ResidentPortal/src/pages/Help.js",
+      "message": "The onClick handler for the 'Make a rent Payment' card was updated to include the Adobe Analytics tracking call."
+    },
+    {
+      "file": "/home/sgadal/ATTagger/Test/ResidentPortal/src/pages/PaymentOption.js",
+      "message": "Tagging applied to the 'Monthly' payment option as per the instruction."
+    },
+    {
+      "file": "/home/sgadal/ATTagger/Test/ResidentPortal/src/pages/PaymentOption.js",
+      "message": "The tagging for 'select_payment_option' with 'Select_PaymentOption_AutoPay' was not present in the file."
+    },
+    {
+      "file": "/home/sgadal/ATTagger/Test/ResidentPortal/src/pages/EnterNumber.js",
+      "message": "The Adobe Analytics tracking was applied to the onSubmit handler as specified in the code sections."
+    },
+    {
+      "file": "/home/sgadal/ATTagger/Test/ResidentPortal/src/pages/EnterNumber.js",
+      "message": "The tracking for 'AutoPay_Continue_Click' was added to the 'Continue' button's onClick event."
+    },
+    {
+      "file": "/home/sgadal/ATTagger/Test/ResidentPortal/src/pages/EnterNumber.js",
+      "message": "The tagging for the back button click event was applied successfully."
+    }
+  ]
+}

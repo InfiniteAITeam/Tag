@@ -1,0 +1,315 @@
+
+
+/* Slightly more generous columns on desktop so content uses the page width */
+@media (min-width: 941px) {
+  .tf-col2 { grid-template-columns: 1.25fr 0.85fr; }
+}
+.tf-pill[disabled], .tf-pill--disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+@keyframes tfSpin { to { transform: rotate(360deg); } }
+@keyframes tfPulse {
+  0% { transform: scale(1); opacity: .9; }
+  50% { transform: scale(1.06); opacity: 1; }
+  100% { transform: scale(1); opacity: .9; }
+}
+
+.tf-changes__meta { font-weight: 600; margin: 6px 0 10px; display:flex; gap:12px; align-items:center; }
+.tf-changes__legend { color:#6b7280; font-weight: 400; font-size: .85rem; }
+
+.tf-changes__list { list-style:none; padding:0; margin:0; display:grid; gap:10px; }
+.tf-changes__item {
+  border:1px solid #e5e7eb; border-radius:12px; padding:10px 12px;
+  background:#fff; display:flex; align-items:center; justify-content:space-between;
+  cursor:pointer; transition: box-shadow .15s ease, border-color .15s ease;
+}
+.tf-changes__item:hover { box-shadow: 0 4px 14px rgba(0,0,0,.08); border-color:#d0d7de; }
+.tf-changes__item.is-selected { outline:2px solid #93c5fd; }
+
+.tf-file-ico { margin-right:8px; }
+.tf-file-path { font-weight:600; margin-right:auto; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.tf-adddel {
+  display:inline-flex; width:180px; height:8px; margin-left:12px; border-radius:8px; overflow:hidden;
+  background:#f3f4f6; border:1px solid #e5e7eb;
+}
+.tf-adds { background:#22c55e; }
+.tf-dels { background:#ef4444; }
+
+.tf-changes__counts { display:flex; gap:10px; font-weight:700; }
+.tf-add { color:#16a34a; }
+.tf-del { color:#b91c1c; }
+
+.tf-modal__footer {
+  display:flex; gap:10px; justify-content:flex-end; margin-top:12px;
+}
+.tf-crumbs{
+  font-weight:700;
+  font-size:18px;
+  color:#6B7280;      /* grey */
+  margin:2px 2px 10px;
+}
+/* Modal */
+.tf-modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; }
+.tf-modal__backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.35); }
+.tf-modal__card {
+  position: relative; width: min(880px, 92vw); max-height: 80vh; overflow: auto;
+  background: #fff; border-radius: 16px; box-shadow: 0 20px 60px rgba(15,23,42,.25); padding: 16px;
+}
+.tf-modal__hdr { display:flex; justify-content: space-between; align-items:center; margin-bottom: 12px; }
+.tf-modal__title { margin: 0; }
+.tf-error { color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca; padding: 8px 10px; border-radius: 8px; }
+.tf-muted { color: #6b7280; font-size: .9rem; }
+.tf-diff-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.tf-diff-item { border: 1px solid #e5e7eb; border-radius: 12px; padding: 10px; background: #fcfcff; }
+.tf-diff-file { display:flex; gap: 8px; align-items: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tf-diff-file code { background: #f8fafc; border: 1px solid #e5e7eb; padding: 4px 6px; border-radius: 6px; display:inline-block; max-width:100%; overflow:hidden; text-overflow:ellipsis; }
+.tf-diff-badge { font-size: .75rem; font-weight: 700; padding: 2px 8px; border-radius: 9999px; border: 1px solid; }
+.tf-diff-old { color: #334155; background:#f1f5f9; border-color:#e2e8f0; }
+.tf-diff-new { color: #065f46; background:#ecfdf5; border-color:#a7f3d0; }
+
+/* ==== Page wrapper ====*/ 
+.tf-wrap { min-height: 100vh; background: #f6f7f8; color: #111; }
+.tf-container { max-width: 1120px; margin: 0 auto; padding: 16px 16px 40px; }
+
+/* ==== Header ==== */
+/* .tf-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; } */
+.tf-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  margin-bottom: 16px;
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid #e7e7ea;
+}
+
+
+.tf-brand { display:flex; align-items:center; gap:12px; }
+.tf-logo { width:40px; height:40px; background:#ef4444; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+.tf-title { font-weight:800; font-size:23px; }
+.tf-subtitle { font-size:12px; color:#6b7280; }
+.tf-steps { display:flex; align-items:center; gap:8px; }
+
+/* ==== Pills & connectors ==== */
+.tf-pill { border:none; background:#e5e7eb; color:#111; padding:8px 14px; border-radius:999px; font-size:13px; cursor:pointer; transition:all .15s; }
+.tf-pill:hover{ background:#dcdfe4; }
+.tf-pill--active{ background:#0b0b0c; color:#fff; box-shadow:0 2px 10px rgba(0,0,0,.15); }
+.tf-pill--done{ box-shadow:0 0 0 2px #34d399 inset; }
+.tf-connector{ width:40px; height:4px; border-radius:999px; background:#d1d5db; }
+.tf-connector--lit{ background:#34d399; }
+.tf-badge{background:#e5f6ee;color:#03543f;border:1px solid #84e1bc;padding:4px 10px;border-radius:999px;font-weight:600;font-size:12px}
+.tf-stat{border-radius:8px;padding:4px 8px;font-weight:700;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.tf-stat--add{background:#e6ffed;border:1px solid #34d058;color:#03543f}
+.tf-stat--del{background:#ffeef0;border:1px solid #d73a49;color:#8a041a}
+.tf-summary{margin:6px 0 0 0}
+.tf-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid #e5e7eb;border-radius:999px;padding:4px 10px;font:12px/1.2 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#fff}
+.tf-chip--ok{background:#e6ffed;border-color:#34d058}
+.tf-chip--warn{background:#fff5f5;border-color:#ef4444}
+
+/* ==== Cards ==== */
+.tf-section { margin-bottom:18px;}
+.tf-card { background:#fff; border:1px solid #e7e7ea; border-radius:16px; padding:16px; box-shadow:0 2px 12px rgba(0,0,0,.06); }
+.tf-card__hdr{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.tf-card__title{ margin:0; font-size:14px; font-weight:700; color:#1f2937; }
+.tf-meta{ font-size:12px; color:#9aa1ab; }
+
+/* ==== Inputs & rows ==== */
+.tf-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+@media (max-width:940px){ .tf-grid{ grid-template-columns: 1fr; } }
+.tf-input{ border:1px solid #dfe3e8; border-radius:10px; padding:10px 12px; font-size:14px; outline:none; }
+.tf-input:focus{ border-color:#111; box-shadow:0 0 0 3px rgba(31,41,55,.1); }
+.tf-row{ display:flex; align-items:center; gap:10px; margin-top:10px; }
+.tf-caption{ font-size:12px; color:#6b7280; }
+
+/* ==== Buttons ==== */
+.tf-btn{ border:none; padding:10px 14px; border-radius:12px; font-size:13px; cursor:pointer; }
+.tf-btn--primary{ background:#0b0b0c; color:#fff;}
+.tf-btn--primary:hover{ filter:brightness(1.05); }
+.tf-btn--primaryy{background:#0b0b0c; color:#fff; width: 150px; height: 32px; font-size: 12px;}
+.tf-btn--primaryy:hover{ filter:brightness(1.05); }
+.tf-btn--blue{ background: transparent; color:#2563eb; border: 2px solid #2563eb; margin-bottom: 15px; position: relative;}
+.tf-btn--blue:hover{ filter:brightness(1.05); }
+.tf-btn--green{ background:#10b981; color:#fff; }
+.tf-btn--green:hover{ filter:brightness(1.05); }
+.tf-btn--danger{ background:#ec083a; color:#fff; }
+.tf-btn--danger:hover{ filter:brightness(1.05); }
+.tf-btn--chip{ padding:6px 10px; border-radius:8px; font-size:12px; background:#e5e7eb; }
+.tf-gap{ gap:8px; }
+
+/* ==== Log panel ==== */
+.tf-log{ background:#0b0b0c; color:#a7f3d0; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; 
+         border-radius:12px; min-height:280px; padding:12px; overflow:auto; white-space:pre-wrap; font-size:12px; border:1px solid #1f2937; }
+
+/* ==== Two-column row ==== */
+.tf-col2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+@media (max-width:940px){ .tf-col2{ grid-template-columns:1fr; } }
+
+/* ==== Table preview ==== */
+.tf-tablewrap{ border:1px solid #dfe3e8; border-radius:12px; overflow:auto; max-height:300px; }
+.tf-table{ width:100%; border-collapse:collapse; font-size:12px; }
+.tf-td{ border:1px solid #eef0f2; padding:6px 8px; }
+.tf-tr--head{ background:#f3f4f6; font-weight:700; }
+.tf-empty{ padding:16px; color:#6b7280; font-size:12px; }
+
+/* ==== Markdown preview ==== */
+.tf-md{ border:1px solid #dfe3e8; border-radius:12px; padding:12px; max-height:420px; overflow:auto; width: 100%; font-size:14px; }
+.tf-md h3{ margin:0 0 6px; }
+.tf-md ul{ margin:0 0 0 18px; }
+.tf-md--wrap {
+  white-space: pre-wrap !important;  /* force wrapping of pre text */
+  word-break: break-word !important; /* break long words/paths */
+  overflow-wrap: anywhere;
+  max-width: 100%;                   /* never exceed parent width */
+  overflow-x: hidden;                /* kill horizontal scrollbar */
+}
+
+/* ==== Diff area ==== */
+.tf-diff{ display:grid; grid-template-columns:240px 1fr; gap:14px; }
+@media (max-width:940px){ .tf-diff{ grid-template-columns:1fr; } }
+.tf-diff__list{ border:1px solid #eaecef; border-radius:12px; overflow:hidden; background:#fff; }
+.tf-diff__listhead{ font-size:12px; font-weight:700; padding:8px 10px; border-bottom:1px solid #eceff3; background:#fafafa; }
+.tf-diff__ul{ list-style:none; margin:0; padding:0; max-height:320px; overflow:auto; }
+.tf-diff__item{ display:block; width:100%; text-align:left; padding:8px 10px; border:none; background:#fff; cursor:pointer; font-size:12px; }
+.tf-diff__item:hover{ background:#f6f7f9; }
+.tf-diff__item.is-active{ background:#f1f5f9; }
+.tf-diff__view{ border:1px solid #eaecef; border-radius:12px; }
+.tf-diff__bar{ display:flex; align-items:center; justify-content:space-between; padding:8px 10px; border-bottom:1px solid #eceff3; background:#fafafa; }
+.tf-diff__file{ font-size:12px; font-weight:700; }
+.tf-diff__hint{ font-size:12px; color:#6b7280; }
+.tf-diff__split{ display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:10px; }
+.tf-diff__pane{ border:1px solid #eceff3; border-radius:10px; overflow:auto; max-height:380px; }
+.tf-diff__panehead{ font-size:11px; background:#f9fafb; border-bottom:1px solid #eceff3; padding:6px 8px; }
+.tf-code{ margin:0; padding:10px; white-space:pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:12px; }
+.tf-footer{ text-align:center; font-size:12px; color:#9aa1ab; margin-top:8px; }
+.tf-logo { background: transparent !important }
+/* --- Results polish --- */
+
+/* Wider table area and fixed layout so columns don't explode in width */
+.tf-tablewrap--wide {
+  max-height: 420px;           /* taller preview */
+  width: 100%;
+  overflow: auto;
+}
+.tf-table--fixed {
+  table-layout: fixed;         /* forces even column width */
+  width: 100%;
+}
+.tf-td--wrap {
+  white-space: normal;         /* wrap long text instead of horizontal scroll */
+  word-break: break-word;
+}
+
+/* Sticky header row (your first row is the header) */
+.tf-tr--sticky td {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #f8fafc;
+  box-shadow: 0 1px 0 #e5e7eb inset;
+}
+
+/* Subtle zebra striping to improve readability */
+.tf-table tbody tr:nth-child(even) td:not(.tf-empty) {
+  background: #fafafa;
+}
+
+/* Taller markdown panel + nicer reading rhythm */
+.tf-md--tall {
+  line-height: 1.45;
+  font-size: 13.5px;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 rgba(0,0,0,0.02);
+}
+
+/* Dedicated download button color (cleaner than global blue) */
+.tf-btn--download {
+  background: #0ea5e9;   /* cyan-500 vibe */
+  color: #fff;
+}
+.tf-btn--download:hover {
+  filter: brightness(1.05);
+}
+.tf-imgwrap {
+  width: 100%;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(17, 24, 39, .04), 0 1px 2px rgba(17, 24, 39, .06);
+  padding: 8px;
+}
+
+/* Identical preview containers for Excel + Markdown */
+.tf-preview-box {
+  border: 1px solid #e6e8eb;
+  border-radius: 12px;
+  scrollbar-width: thin;   
+  background: #fff;
+  padding: 12px;
+  min-height: 40px;
+  max-width: 1100px;
+  overflow: auto;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  max-height: 400px;          /* FIXED height forces scroll */
+  overflow-y: auto;       /* enables vertical scrolling */
+  overflow-x: auto;
+  scrollbar-width: thin;  /* thinner scrollbar (Firefox) */
+
+}
+.tf-preview-box::-webkit-scrollbar {
+  width: 6px;
+}
+.tf-preview-box::-webkit-scrollbar-thumb {
+  background: #c1c8d0;
+  border-radius: 4px;
+}
+.tf-preview-box::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+
+/* Empty text style */
+.tf-empty {
+  color: #6b7280;           /* neutral gray */
+  font-size: 0.95rem;
+}
+
+/* Pill-styled download buttons with icon */
+.tf-download-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;            /* reduced padding */
+  border-radius: 9999px;
+  background: #f5f8ff;
+  border: 1px solid #d6e2ff;
+  color: #2563eb;           /* blue text */
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 0.55rem;
+  box-shadow: 0 1px 2px rgba(20, 40, 160, 0.08);
+  transition: background .15s ease, box-shadow .15s ease, transform .02s ease;
+}
+.tf-download-pill:hover {
+  background: #eef4ff;
+  box-shadow: 0 2px 6px rgba(20, 40, 160, 0.12);
+}
+.tf-download-pill:active {
+  transform: translateY(1px);
+}
+.tf-download-pill svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  flex: 0 0 16px;
+}
+
+/* Optional: align the two header action areas consistently */
+.tf-card__hdr .tf-download-pill { margin-left: 8px; }

@@ -1,0 +1,23 @@
+:root{--page:#faf7ef;--panel:#ffffff;--ink:#1b1b1b;--muted:#6a6a6a;--accent:#e51d27;--border:#e1dfd7;--tile:#f6f3ea;}
+*{box-sizing:border-box} html,body,#root{height:100%} body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--page)}
+.app-shell{min-height:100%} .screen{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:24px} .page{width:min(1100px,92vw);}
+.toolbar{display:flex;align-items:center;gap:12px;margin-bottom:8px} .pill{background:var(--panel);border:1px solid var(--border);border-radius:999px;padding:8px 14px}
+.spacer{flex:1} .link{background:none;border:none;color:#1652f0;cursor:pointer;font-weight:600} .link.ghost{color:#6c7aa0;text-decoration:none} .link:hover{text-decoration:underline}
+.hero{font-size:40px;line-height:1.1;margin:12px 0 16px 0} .hero.red{color:var(--accent);}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:16px} .grid-2.compact{grid-template-columns:repeat(2,minmax(220px,1fr));gap:20px}
+.card{position:relative;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;min-height:120px}
+.card.action{cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.04)} .card.action:hover{outline:2px solid #cfd9ff} .card.ghost{opacity:.6}
+.card h3{margin:0 0 6px 0} .card p{margin:0;color:var(--muted);} .chev{position:absolute;right:14px;bottom:12px;font-size:22px;color:#888}
+.tile.big{background:var(--panel);border:1px solid var(--border);border-radius:16px;height:160px;display:flex;align-items:center;justify-content:center;font-weight:800;cursor:pointer}
+.tile.big:hover{outline:2px solid #cfd9ff}
+.entry{display:grid;grid-template-columns:1fr;gap:16px;max-width:560px} .field{display:flex;flex-direction:column;gap:8px} .label{font-weight:700}
+input{border:2px solid var(--border);border-radius:10px;padding:12px 14px;font-size:16px;background:var(--panel)}
+input:focus{border-color:#5b7cff;box-shadow:0 0 0 4px rgba(91,124,255,.16);outline:none}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:320px} .key{padding:16px;border-radius:12px;border:1px solid var(--border);background:var(--tile);cursor:pointer;font-size:18px}
+.key:hover{outline:2px solid #dfe6ff}
+.btn{border:none;border-radius:12px;padding:14px 16px;font-weight:700;cursor:pointer} .btn.primary{background:var(--accent);color:white} .btn.primary:disabled{background:#e6a2a6;cursor:not-allowed}
+.tf-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+}

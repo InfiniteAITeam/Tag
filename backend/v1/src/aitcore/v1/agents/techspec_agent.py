@@ -18,24 +18,11 @@ class TechSpecAgent(BaseAgent):
         super().__init__("TechSpecAgent", use_llm=False)
     
     def process(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Process TechSpec file.
-        
-        Expected input:
-        - techspec_path: str (path to Excel TechSpec)
-        - figma_screenshot: str (optional, path to Figma screenshot)
-        
-        Returns:
-            Parsed TechSpec with items
-        """
         self.log_step("Starting TechSpec parsing")
         
         techspec_path = input_data.get("techspec_path")
         if not techspec_path:
             raise ValueError("techspec_path is required")
-        
-        # TODO: Implement actual Excel parsing using openpyxl
-        # For now, return a structured placeholder
         
         spec_items: List[SpecItem] = []
         

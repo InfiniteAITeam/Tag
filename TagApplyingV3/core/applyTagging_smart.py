@@ -1,14 +1,25 @@
 #!/usr/bin/env python
 """
-Smart Apply Tagging - Orchestrates the new smart LLM-aware tagging system
+Smart Apply Tagging - Unified Tagging Pipeline
 
-This script:
+This script orchestrates a complete two-phase tagging system:
+
+PHASE 1: Tracking Code Application
 1. Reads tagging_report.json (from taggingSuggestion.py)
-2. Converts it to apply_plan.json format (compatible with new smart agent)
-3. Calls the new smart agent which:
+2. Converts it to apply_plan.json format
+3. Calls smart agent which:
    - Reads the ACTUAL Tagging framework
    - Passes it to LLM for intelligent decisions
    - Lets LLM figure out imports, hooks, and calls (no hardcoding)
+
+PHASE 2: Data-Track Attribute Application (NEW)
+1. Uses same tagging_report.json
+2. Identifies interactive elements (buttons, onClick divs, etc.)
+3. Generates semantic data-track values using LLM
+4. Applies data-track attributes to elements
+
+ONE ENTRY POINT - Both phases run automatically with single command:
+    python core/applyTagging_smart.py
 """
 
 import os
@@ -19,6 +30,14 @@ from typing import Dict, Any, List
 from dotenv import load_dotenv
 
 from applyTaggingAgent_smart import ai_apply_from_json_smart
+
+# Import data-track functionality
+try:
+    from applyDataTrack_smart import apply_data_track_attributes_smart
+    DATA_TRACK_AVAILABLE = True
+except ImportError:
+    DATA_TRACK_AVAILABLE = False
+    print("⚠️  Data-track module not available (optional)")
 
 CORE_DIR = Path(__file__).resolve().parent
 OUTPUTS_DIR = CORE_DIR / "outputs"
@@ -199,13 +218,13 @@ def main():
     # Step 5: Summary
     print("")
     print("=" * 70)
-    print("Summary")
+    print("Tracking Code Application Summary")
     print("=" * 70)
     print(f"✓ Successfully applied    : {ok}")
     print(f"✗ Failed                 : {fail}")
     print(f"⊘ Skipped (already tagged): {stats.get('skipped_already_tagged', 0)}")
     print("")
-    print(f"📊 Statistics:")
+    print(f"📊 Tracking Statistics:")
     print(f"   • Imports added   : {stats.get('import_added', 0)}")
     print(f"   • Hooks added     : {stats.get('hook_added', 0)}")
     print(f"   • Calls added     : {stats.get('tracking_added', 0)}")
@@ -218,12 +237,79 @@ def main():
     
     print("")
     print("=" * 70)
-    print("Outputs")
+    print("Tracking Code Outputs")
     print("=" * 70)
     print(f"• Apply Plan     : {apply_plan_path}")
     print(f"• Apply Log      : {OUTPUTS_DIR / 'apply_log_smart.json'}")
     print(f"• Repo Path      : {repo_path}")
+    
+    # Step 6: Apply data-track attributes (NEW - Unified Pipeline)
     print("")
+    print("=" * 70)
+    print(" PHASE 2: Applying Data-Track Attributes")
+    print("=" * 70)
+    
+    if DATA_TRACK_AVAILABLE:
+        try:
+            print("🚀 Starting data-track attribute application...")
+            print("   (This adds semantic data-track attributes to interactive elements)")
+            print("")
+            
+            dt_success, dt_fail, dt_stats = apply_data_track_attributes_smart(
+                tagging_report_path=report_file,
+                repo_root=repo_path,
+                use_llm=bool(os.getenv("VEGAS_API_KEY")),
+                dry_run=False,
+                skip_if_already=True
+            )
+            
+            print("")
+            print("=" * 70)
+            print("Data-Track Application Summary")
+            print("=" * 70)
+            print(f"✓ Files processed        : {dt_stats.get('processed', 0)}")
+            print(f"✓ Successfully modified  : {dt_success}")
+            print(f"✗ Failed                 : {dt_fail}")
+            print(f"📊 Elements processed    : {dt_stats.get('total_elements_found', 0)}")
+            print(f"📊 Data-track added      : {dt_stats.get('total_elements_modified', 0)}")
+            print(f"⊘ Elements skipped       : {dt_stats.get('total_elements_skipped', 0)}")
+            
+            if dt_fail == 0:
+                print("\n✓ Data-track attributes applied successfully!")
+                print(f"  Backups saved with .datatrack.bak extension")
+            else:
+                print(f"\n⚠️  {dt_fail} files had issues. Review data_track_report.json for details.")
+            
+            print("")
+            print("=" * 70)
+            print("Data-Track Outputs")
+            print("=" * 70)
+            print(f"• Data-Track Report      : {OUTPUTS_DIR / 'data_track_report.json'}")
+            
+        except Exception as e:
+            print(f"\n⚠️  Data-track application error: {e}")
+            print("   (Tracking code was applied successfully)")
+    else:
+        print("⚠️  Data-track module not available")
+        print("   Install it to automatically add data-track attributes")
+    
+    # Step 7: Final summary
+    print("")
+    print("=" * 70)
+    print("UNIFIED PIPELINE COMPLETE ✓")
+    print("=" * 70)
+    print("")
+    print("✅ Phase 1: Tracking Code Applied")
+    print(f"   └─ Files: {ok} success, {fail} failed")
+    
+    if DATA_TRACK_AVAILABLE:
+        print("")
+        print("✅ Phase 2: Data-Track Attributes Applied")
+        print(f"   └─ Files: {dt_success} success, {dt_fail} failed")
+        print(f"   └─ Elements: {dt_stats.get('total_elements_modified', 0)} modified")
+    
+    print("")
+    print("📂 All outputs saved in:", OUTPUTS_DIR)
     print("✓ Complete!")
 
 

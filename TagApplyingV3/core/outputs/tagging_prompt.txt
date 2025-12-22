@@ -1,0 +1,384 @@
+# Vegas Analytics Tagging Agent - Code Generation Task
+
+## Overview
+Apply corporate analytics tagging to React components using the **useTagging() custom hook** from the Verizon codebase.
+
+The tagging framework is located at:
+- **Framework Path**: `src/pages/ExpressStore/Tagging/`
+- **Hook Export**: `index.js` exports `useTagging()`
+- **Data Layer**: `dlStructure.js` defines the data structure
+
+## Repository Information
+- **Repo Path**: C:\Users\ramean3\Desktop\TestCodes\TagApplied_V3\cloned_repo
+- **Files to Tag**: 1 files
+- **Framework**: Custom `useTagging()` hook from `src/pages/ExpressStore/Tagging/index.js`
+
+---
+
+## Task: Apply Tagging to These Files
+
+
+### File 1
+**Path**: `src/pages/ExpressStore/PayBill/PayBillType/index.js`
+**Description**: {'file': 'src/pages/ExpressStore/PayBill/PayBillType/index.js', 'description': 'Bill type selection page load - Mobile/HomeInternet options', 'eventType': 'page_load', 'suggestedFunction': 'trackPageLoad', 'context': 'useEffect hook on component mount', 'suggestedParameters': {'pageName': 'Bill type', 'flow': 'BPK Bill type', 'subFlow': 'Bill Type Options', 'event': 'BillType_Page_Load'}}
+**Event Type**: `page_load`
+**Function**: `trackPageLoad()`
+
+**What to Track**: Add page_load tracking to: Bill type selection page load - Mobile/HomeInternet options
+
+**Parameters to Use**: {'pageName': 'Bill type', 'flow': 'BPK Bill type', 'subFlow': 'Bill Type Options', 'event': 'BillType_Page_Load'}
+
+**IMPORTANT**: Use the exact parameters provided above when generating code. Do NOT use generic placeholders like 'Page Name' or 'Flow Name'. Use the specific values provided.
+
+---
+
+
+## Real Implementation Pattern - EXACT COPY THIS STRUCTURE
+
+### Pattern 1: PAGE LOAD TRACKING
+
+**When to Use**: Component mounts, page becomes visible
+
+**Real Example from Codebase** (`src/pages/ExpressStore/Landing/index.js`):
+```javascript
+import React, { useEffect } from 'react';
+import { useTagging } from '../../Tagging';
+
+function ExpressStore() {
+  const { trackPageLoad } = useTagging();
+  
+  // Other useEffects...
+  useEffect(() => {
+    // Clear state logic
+    dispatch(clearData());
+    // ... other dispatches
+  }, []);
+
+  // PAGE LOAD TRACKING - Separate useEffect
+  useEffect(() => {
+    trackPageLoad({ 
+      pageName: 'BPK home landing', 
+      flow: 'BPK visit' 
+    });
+  }, []);
+  
+  return <div>{/* JSX */}</div>;
+}
+```
+
+**What You Must Generate**:
+1. Import: `import { useTagging } from '../../Tagging';`
+2. Destructure: `const { trackPageLoad } = useTagging();`
+3. Add useEffect:
+   ```javascript
+   useEffect(() => {
+     trackPageLoad({ pageName: '...', flow: '...' });
+   }, []);
+   ```
+
+---
+
+### Pattern 2: CLICK/INTERACTION TRACKING
+
+**When to Use**: User clicks button, selects option, submits form
+
+**Real Example from Codebase** (`src/pages/ExpressStore/PayBill/index.js`):
+```javascript
+import { useTagging } from '../../Tagging';
+
+function BillPayPage() {
+  const { trackPageChange } = useTagging();
+  
+  const handlePaymentSelection = (type) => {
+    // ADD THIS FIRST:
+    trackPageChange(
+      'payment-type-selector', 
+      `Payment type selected: ${type}`
+    );
+    
+    // THEN EXISTING LOGIC:
+    dispatch(setBillType(type));
+    mfeLogger(LOG_LEVEL.INFO, { action: 'Paybill_Type_Selected', value: type });
+    setCurrentPage('numberPad');
+  };
+  
+  return (
+    <button onClick={() => handlePaymentSelection('mobile')}>
+      Select Mobile
+    </button>
+  );
+}
+```
+
+**What You Must Generate**:
+1. Import: `import { useTagging } from '../../Tagging';`
+2. Destructure: `const { trackPageChange } = useTagging();`
+3. Add to handler (FIRST LINE):
+   ```javascript
+   trackPageChange('selector-id', 'descriptive message');
+   ```
+
+---
+
+### Pattern 3: ERROR TRACKING
+
+**When to Use**: Error occurs, catch block, error boundary
+
+**Real Example from Codebase**:
+```javascript
+import { useTagging } from '../../Tagging';
+
+function ComponentWithErrorHandling() {
+  const { trackPageNotification } = useTagging();
+  
+  try {
+    const response = await fetchBillData();
+  } catch (error) {
+    // ADD THIS FIRST:
+    trackPageNotification(
+      'BillFetchError',
+      error.message,
+      'bill-fetch-error-id'
+    );
+    
+    // THEN EXISTING LOGIC:
+    setError('Failed to fetch bill data');
+  }
+}
+```
+
+**What You Must Generate**:
+1. Import: `import { useTagging } from '../../Tagging';`
+2. Destructure: `const { trackPageNotification } = useTagging();`
+3. Add to catch block (FIRST LINE):
+   ```javascript
+   trackPageNotification('EventName', error.message, 'unique-id');
+   ```
+
+---
+
+## Three Tracking Functions - EXACT SIGNATURES
+
+### Function 1: trackPageLoad()
+```javascript
+trackPageLoad({ 
+  pageName: 'string',    // Page/screen identifier (e.g., 'BPK home landing')
+  flow: 'string'         // Journey/flow name (e.g., 'BPK visit')
+})
+```
+
+**Requirements**:
+- Called in `useEffect` with `[]` dependency array
+- Called ONCE per page/component mount
+- Parameters are REQUIRED
+
+### Function 2: trackPageChange()
+```javascript
+trackPageChange(
+  'selector-id',        // CSS selector or element ID (e.g., 'payment-type-selector')
+  'message'             // Action description (e.g., 'Payment type selected: mobile')
+)
+```
+
+**Requirements**:
+- Called in event handler (onClick, onChange, onSubmit, etc.)
+- Called FIRST in handler before any other logic
+- Both parameters are strings
+
+### Function 3: trackPageNotification()
+```javascript
+trackPageNotification(
+  'EventName',          // Event identifier (e.g., 'BillFetchError')
+  'message',            // Error message or description
+  'unique-id'           // Unique identifier (e.g., 'bill-fetch-error')
+)
+```
+
+**Requirements**:
+- Called in catch blocks or error handlers
+- Called FIRST before any other error handling logic
+- All three parameters are strings
+
+---
+
+## Import Path Rules - CRITICAL
+
+### Rule 1: Calculate Relative Path Correctly
+```
+File: src/pages/ExpressStore/PayBill/index.js
+Tagging folder: src/pages/ExpressStore/Tagging/
+
+Correct relative path: ../Tagging
+✅ CORRECT: import { useTagging } from '../../Tagging';
+
+File: src/pages/ExpressStore/PayBill/PayBillType/index.js
+Tagging folder: src/pages/ExpressStore/Tagging/
+
+Correct relative path: ../../Tagging
+✅ CORRECT: import { useTagging } from '../../Tagging';
+```
+
+### Rule 2: Don't Add /index.js
+```
+❌ WRONG: import { useTagging } from '../Tagging/index.js';
+✅ CORRECT: import { useTagging } from '../../Tagging';
+```
+
+---
+
+## Hook Destructuring - IMPORTANT
+
+**Pattern**: Only destructure functions you actually use
+
+### For Page Load Only:
+```javascript
+const { trackPageLoad } = useTagging();
+```
+
+### For Interactions Only:
+```javascript
+const { trackPageChange } = useTagging();
+```
+
+### For Multiple Events:
+```javascript
+const { trackPageLoad, trackPageChange } = useTagging();
+```
+
+**Rule**: Never destructure `trackPageNotification` if not using it
+
+---
+
+## Event Type Detection - HOW TO DECIDE
+
+### This is a PAGE LOAD event if:
+- Description mentions: "page", "landing", "home", "screen", "mount", "load", "hub", "view"
+- No function name in description
+- No line number, or refers to top of component
+- → Use `trackPageLoad()` in `useEffect`
+
+### This is a CLICK event if:
+- Description mentions: "click", "select", "submit", "handle", "payment", "option", "button", "interaction", "action"
+- Description has function name like `handleX()` or method name
+- → Use `trackPageChange()` in event handler
+
+### This is an ERROR event if:
+- Description mentions: "error", "catch", "validation", "exception", "boundary", "notification", "alert"
+- Refers to error handling code
+- → Use `trackPageNotification()` in catch block
+
+---
+
+## Validation Checklist - EVERY Generated Change
+
+- [ ] Import added if missing: `import { useTagging } from '../../Tagging';`
+- [ ] Relative path is correct (no /index.js)
+- [ ] Hook destructured with only needed functions
+- [ ] Function called with correct parameters
+- [ ] No syntax errors (brackets, commas, quotes balanced)
+- [ ] Original code preserved (only added tracking, didn't remove anything)
+- [ ] No duplicate imports or tracking calls
+- [ ] Parameters are meaningful strings (not generic placeholders)
+
+---
+
+## Error Prevention - Avoid These
+
+❌ **WRONG**: Creating new tagging functions
+```javascript
+// Don't do this - only use existing hook functions
+const myTracker = () => { ... }
+```
+
+❌ **WRONG**: Importing with /index.js
+```javascript
+// Wrong
+import { useTagging } from '../Tagging/index.js';
+```
+
+❌ **WRONG**: Destructuring all functions when not needed
+```javascript
+// Wrong
+const { trackPageLoad, trackPageChange, trackPageNotification } = useTagging();
+// Use only what you need
+```
+
+❌ **WRONG**: Modifying existing function logic
+```javascript
+// Wrong - changed original behavior
+const handleClick = (type) => {
+  if (!trackPageChange(...)) return;  // Changed logic!
+  originalAction();
+};
+
+// Right - added tracking, kept original
+const handleClick = (type) => {
+  trackPageChange(...);
+  originalAction();  // Unchanged
+};
+```
+
+❌ **WRONG**: Adding tracking after error
+```javascript
+// Wrong
+try {
+  operation();
+  trackPageNotification(...);  // Too late!
+} catch (e) {
+}
+
+// Right
+try {
+  operation();
+} catch (e) {
+  trackPageNotification(...);  // Immediately
+  handleError(e);
+}
+```
+
+---
+
+## Summary: Step-by-Step Generation
+
+1. **Read the description** for each file to tag
+2. **Detect event type**: page_load, click, or error?
+3. **Find insertion point**: 
+   - Page load → In `useEffect` with `[]`
+   - Click → In event handler (first line)
+   - Error → In catch block (first line)
+4. **Calculate import path** from file location to `src/pages/ExpressStore/Tagging/`
+5. **Add import** if missing
+6. **Destructure hook** with needed functions only
+7. **Call tracking function** with meaningful parameters
+8. **Preserve all existing code** - only add, never remove
+
+---
+
+## CRITICAL: Use Provided Parameters
+
+For EACH file in the "Task" section:
+- Look at the "Parameters to Use" section
+- Extract the EXACT VALUES provided:
+  - `pageName`: Use this exact value (NOT "Page Name")
+  - `flow`: Use this exact value (NOT "Flow Name")
+  - `selector`: Use this exact value
+  - `message`: Use this exact value
+  
+**Example:**
+If Parameters shows: `{"pageName": "BPK Home Landing", "flow": "BPK visit"}`
+Generate: `trackPageLoad({ pageName: 'BPK Home Landing', flow: 'BPK visit' })`
+
+NOT: `trackPageLoad({ pageName: 'Page Name', flow: 'Flow Name' })`
+
+---
+
+## Ready to Generate?
+
+For each file listed in the "Task" section above:
+- Apply the correct pattern
+- Follow all rules
+- **USE THE PROVIDED PARAMETERS EXACTLY**
+- Preserve existing code
+- Generate correct tagging implementation
+
+Start with the first file and apply the pattern!

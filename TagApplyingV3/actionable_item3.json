@@ -1,0 +1,211 @@
+[
+  {
+    "file": "src/pages/CMSKiosk/Landing/LandingPage.js",
+    "description": "CMS Landing page initialization - Application parameter setup",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount for app initialization",
+    "suggestedParameters": {
+      "pageName": "CMS Landing",
+      "flow": "CMS initialization",
+      "subFlow": "App Setup",
+      "event": "AppInit_Application_Info"
+    }
+  },
+  {
+    "file": "src/pages/CMSKiosk/Landing/LandingPage.js",
+    "description": "App initialization event handler - Shell application setup",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "HandleEvent callback for shell app initialization",
+    "suggestedParameters": {
+      "pageName": "CMS Landing",
+      "flow": "Shell AppInit",
+      "subFlow": "Shell Setup",
+      "event": "AppInit_Event_Trigger"
+    }
+  
+  },
+  {
+    "file": "src/pages/ExpressStore/Landing/index.js",
+    "description": "Express Store landing page load - Initialization and state cleanup",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount",
+    "suggestedParameters": {
+      "pageName": "BPK home landing",
+      "flow": "BPK visit",
+      "subFlow": "Landing Init",
+      "event": "Landing_Page_Load"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/Landing/index.js",
+    "description": "Store location data fetch - API call on mount",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect for store details retrieval",
+    "suggestedParameters": {
+      "pageName": "BPK home landing",
+      "flow": "Store Initialization",
+      "subFlow": "Store Info Fetch",
+      "event": "Store_Info"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/PayBill/PayBillOptions/index.js",
+    "description": "Payment options page load - Eligible payment methods display",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook for payment options initialization",
+    "suggestedParameters": {
+      "pageName": "payment options",
+      "flow": "Pay bill mobile",
+      "subFlow": "Payment Method Selection",
+      "event": "Paybill_Options_Load"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/PayBill/PayBillSignIns/index.js",
+    "description": "PayBill signin page load - Login options display",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount",
+    "suggestedParameters": {
+      "pageName": "Pay bill signin",
+      "flow": "Pay bill mobile",
+      "subFlow": "Login Options",
+      "event": "PayBill_SignIn_Load"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/PayBill/PayBillType/index.js",
+    "description": "Bill type selection page load - Mobile/HomeInternet options",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount",
+    "suggestedParameters": {
+      "pageName": "Bill type",
+      "flow": "BPK Bill type",
+      "subFlow": "Bill Type Options",
+      "event": "BillType_Page_Load"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/PayBill/NumberPad/index.js",
+    "description": "Pay bill number pad page load - Mobile/Account number entry",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount",
+    "suggestedParameters": {
+      "pageName": "pay bill",
+      "flow": "Pay bill mobile",
+      "subFlow": "Number Entry",
+      "event": "NumberPad_Page_Load"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/CreditCard/index.js",
+    "description": "Credit card flow initialization - Page selection based on balance",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook for menu selection and balance checking",
+    "suggestedParameters": {
+      "pageName": "Credit Card payment",
+      "flow": "Pay bill",
+      "subFlow": "Card Processing",
+      "event": "CreditCard_Init"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/Check/index.js",
+    "description": "Check payment flow initialization - Routing and account entry",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "Component state initialization for check payment",
+    "suggestedParameters": {
+      "pageName": "Check payment",
+      "flow": "Pay bill",
+      "subFlow": "Check Processing",
+      "event": "Check_Init"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/GiftCard/index.js",
+    "description": "Gift card flow initialization - Entry point selection",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "Component state initialization for gift card payment",
+    "suggestedParameters": {
+      "pageName": "Gift Card payment",
+      "flow": "Pay bill",
+      "subFlow": "GiftCard Processing",
+      "event": "GiftCard_Init"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/HealthCheckErrors/index.js",
+    "description": "Hardware health check error page load - Device status display",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount",
+    "suggestedParameters": {
+      "pageName": "Health check",
+      "flow": "BPK health check",
+      "subFlow": "Error Display",
+      "event": "HealthCheck_Error_Load"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/ScanAndGo/index.js",
+    "description": "ScanAndGo flow initialization - Page routing based on search params",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "Component state initialization with search parameters",
+    "suggestedParameters": {
+      "pageName": "ScanAndGo",
+      "flow": "Accessory purchase",
+      "subFlow": "Flow Init",
+      "event": "ScanAndGo_Init"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/CompleteOrder/index.js",
+    "description": "Complete order flow initialization - Page routing from search params",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "Component state initialization",
+    "suggestedParameters": {
+      "pageName": "Complete Order",
+      "flow": "Order completion",
+      "subFlow": "Flow Init",
+      "event": "CompleteOrder_Init"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/Splash/index.js",
+    "description": "Splash screen initialization - Language detection and setup",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect for language initialization and domain detection",
+    "suggestedParameters": {
+      "pageName": "Splash",
+      "flow": "BPK initialization",
+      "subFlow": "Language Init",
+      "event": "Splash_Init"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/SucessConfirmation/index.js",
+    "description": "Payment success confirmation - Confirmation page display",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook for payment confirmation tracking",
+    "suggestedParameters": {
+      "pageName": "Confirmation",
+      "flow": "Payment success",
+      "subFlow": "Confirmation Display",
+      "event": "Payment_Success_Confirm"
+    }
+  }
+]

@@ -1,0 +1,47 @@
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import CardBill from '../../Common/CardBill';
+function PayBillSignIns({ userInfo, setSelectedOption, onBack }) {
+
+  const updatedOptions = userInfo?.output?.options?.filter((option) => {
+    if ((userInfo?.amRole === 'mobileSecure' || userInfo?.amRole === 'prepay') && option.type === 'otp') {
+      return option.type !== 'otp';
+    }
+    return option.type !== 'password';
+  });
+
+  const tileList =
+    updatedOptions?.map(({ heading, subHeading, type, ...rest }) => ({
+      ...rest,
+      title: type === 'otp' ? 'Sign in with a verification code' : heading,
+      subtitle: subHeading,
+      icon: '',
+      handleClick: () => setSelectedOption(type, false),
+    })) ?? [];
+
+  return (
+    <CardBill
+      {...{
+        title: 'How would you like to sign in?',
+        tileList: [
+          ...tileList,
+          { title: 'Pay without signing in', subtitle: '', icon: '', handleClick: () => setSelectedOption('', true) },
+        ],
+        onBack: () => {
+          onBack('numberPad');
+        },
+        isBackButton: true,
+        isMenu: true,
+        activeMenu: 'pay_bill',
+      }}
+    />
+  );
+}
+
+PayBillSignIns.propTypes = {
+  userInfo: PropTypes.object,
+  setSelectedOption: PropTypes.func.isRequired,
+  onBack: PropTypes.func,
+};
+
+export default PayBillSignIns;

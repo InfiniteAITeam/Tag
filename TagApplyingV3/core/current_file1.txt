@@ -1,0 +1,185 @@
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { LOG_LEVEL } from 'onevzsoemfeframework/Logging';
+import { mfeLogger } from '../../../../modules/services/APIService/MfeLogger';
+import { setPaymentType } from '../../Slice/commonStoreSlice';
+import { usePeripheralNavigate, removeSearchParam } from '../../utils';
+import { useBPKAuditAPI } from '../../util/bpkAuditAPI';
+import GiftCard from '../../Images/gift_card_pay_option.svg';
+import Check from '../../Images/check_render_payoption.svg';
+import CreditCard from '../../Images/credit_card_pay_option.svg';
+import CardBill from '../../Common/CardBill';
+import CashIcon from '../../Images/cash_pay_options.svg';
+import { BALANCE_CREDIT_TEXT, BALANCE_DUE_TEXT } from '../../Constants/Constants';
+
+const TitleText = styled.div`
+  margin-top: 48px;
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 40px;
+  letter-spacing: 0.5px;
+`;
+
+const TitleInfo = styled.div`
+  font-family: Verizon-NHG-eDS, Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: 0.5px;
+`;
+
+const TileContainer = styled.div`
+  margin-top: 40px;
+`;
+function PayBillOptions({ onBack }) {
+  const [paymentOptionsList, setPaymentOptionsList] = useState([]);
+  const tileListOptions = [
+    {
+      id: 'CREDIT',
+      title: 'Credit/Debit Card',
+      subtitle: '',
+      image: CreditCard,
+      handleClick: () => handlePageChange('/credit-card'),
+    },
+    {
+      id: 'GIFT_CARD',
+      title: 'Verizon Gift Card',
+      subtitle: '',
+      image: GiftCard,
+      handleClick: () => handlePageChange('/gift-card'),
+    },
+    { id: 'CHECK', title: 'Check', subtitle: '', image: Check, handleClick: () => handlePageChange('/check') },
+    { id: 'CASH', title: 'Cash', subtitle: '', image: CashIcon, handleClick: () => handlePageChange('/cash') },
+  ];
+
+  const navigate = usePeripheralNavigate();
+  const { trackPageLoad } = useTagging();
+  const dispatch = useDispatch();
+  const { triggerAuditTransaction } = useBPKAuditAPI();
+  const isNOSFlow = useSelector((state) => state.common?.isNOSFlow);
+  const userData = useSelector((state) => state.billPay?.userData || {});
+  const prepaidData = useSelector((state) => state?.billPay?.prePaidData);
+  const cashDeviceStatus = useSelector((state) => state?.cashDevice?.status);
+  const billSummaryData = useSelector((state) => state?.billPay?.billSummary);
+  const { appInitVars: shellInitData } = useSelector((state) => state.peripheralsInfo);
+  const isFiosFlow = userData?.isFiosFlow || false;
+  const backLink = isNOSFlow && !isFiosFlow ? 'loginOptions' : 'amountDue';
+
+  useEffect(() => {
+    trackPageLoad({ pageName: 'payment options', flow: `Pay bill ${isFiosFlow ? 'home internet' : 'mobile'}` });
+    triggerAuditTransaction({ serviceAction: 'createnewtransaction' });
+  }, []);
+
+  const getPaymentTypesAllowed = (paymentRestrictions) => {
+    if (paymentRestrictions.cashOnly) {
+      if (paymentRestrictions.cashDeviceHealthStatus || shellInitData.isCashAcceptorConnected) {
+        setPaymentOptionsList([
+          { id: 'CASH', title: 'Cash', subtitle: '', image: CashIcon, handleClick: () => handlePageChange('/cash') },
+        ]);
+      } else {
+        setPaymentOptionsList([]);
+      }
+    } else {
+      let paymentTypes = ['CASH', 'CREDIT', 'CHECK', 'GIFT_CARD'];
+      /* istanbul ignore else */
+      if (!paymentRestrictions.cashDeviceHealthStatus || !shellInitData.isCashAcceptorConnected) {
+        paymentTypes = paymentTypes.filter((item) => item !== 'CASH');
+      }
+      /* istanbul ignore else */
+      if (paymentRestrictions.bankForbidden || paymentRestrictions.overpaymentReached || paymentRestrictions.isPrepay) {
+        paymentTypes = paymentTypes.filter((item) => item !== 'CHECK');
+      }
+      /* istanbul ignore else */
+      if (paymentRestrictions.creditForbidden || !shellInitData?.ptaEnabled) {
+        paymentTypes = paymentTypes.filter((item) => item !== 'CREDIT');
+      }
+      /* istanbul ignore else */
+      if (paymentRestrictions?.isFiosFlow) {
+        paymentTypes = paymentTypes.filter((item) => item !== 'GIFT_CARD');
+      }
+      const filteredTiles = tileListOptions.filter((tile) => paymentTypes.includes(tile.id));
+      mfeLogger(LOG_LEVEL.INFO, { action: `Paybill_Eligible_options`, value: filteredTiles });
+      setPaymentOptionsList(filteredTiles);
+    }
+  };
+
+  const getPaymentOptions = () => {
+    const paymentRestrictions = {
+      cashOnly:
+        billSummaryData?.isCashOnly === 'true' &&
+        billSummaryData?.isCashOnlyWithBankAccount === 'false' &&
+        billSummaryData?.isCashOnlyWithCreditCard === 'false',
+      cashDeviceHealthStatus:
+        cashDeviceStatus?.healthStatus?.toLowerCase() === 'up' || cashDeviceStatus?.healthStatus === undefined,
+      bankForbidden: billSummaryData?.isCashOnly === 'true' && billSummaryData?.isCashOnlyWithBankAccount === 'true',
+      creditForbidden: billSummaryData?.isCashOnly === 'true' && billSummaryData?.isCashOnlyWithCreditCard === 'true',
+      overpaymentReached:
+        parseFloat(billSummaryData?.balanceDueAmount) <= 0 ||
+        (isFiosFlow && parseFloat(billSummaryData?.liveBalance) <= 0),
+      isPrepay: userData?.amRole === 'prepay' || (isFiosFlow && userData?.prepayAccount),
+      isFiosFlow,
+    };
+    getPaymentTypesAllowed(paymentRestrictions);
+  };
+
+  const handlePageChange = (page) => {
+    navigate(page);
+    mfeLogger(LOG_LEVEL.INFO, { action: 'Paybill_Eligible_Options_Selected', value: page.slice(1) });
+    dispatch(setPaymentType(page.slice(1)));
+  };
+
+  useEffect(() => {
+    removeSearchParam('page');
+  }, []);
+
+  useEffect(() => {
+    getPaymentOptions();
+  }, [cashDeviceStatus, billSummaryData, shellInitData]);
+
+  return (
+    <CardBill
+      {...{
+        title: (
+          <>
+            <div>How would you like to pay?</div>
+            <TitleText>
+              {isFiosFlow && billSummaryData?.liveBalance && (
+                <strong>
+                  Due today: {parseFloat(billSummaryData?.liveBalance) < 0 && '-'}$
+                  {Math.abs(parseFloat(billSummaryData?.liveBalance)).toFixed(2)}
+                </strong>
+              )}
+              {!isNOSFlow && userData?.amRole && userData?.amRole !== 'prepay' && (
+                <strong>
+                  {billSummaryData?.balanceDueAmount < 0 ? BALANCE_CREDIT_TEXT : BALANCE_DUE_TEXT} $
+                  {Math.abs(parseFloat(billSummaryData?.balanceDueAmount)).toFixed(2)}
+                </strong>
+              )}
+              {!isNOSFlow && userData?.amRole === 'prepay' && (
+                <TileContainer>
+                  <TitleInfo>Available balance: ${prepaidData?.available_balance}</TitleInfo>
+                  <TitleInfo>Plan cost: ${parseFloat(prepaidData?.optimal_replenishment_amount).toFixed(2)}</TitleInfo>
+                </TileContainer>
+              )}
+            </TitleText>
+          </>
+        ),
+        tileList: paymentOptionsList,
+        onBack: () => {
+          onBack(`${backLink}`);
+        },
+        isBackButton: false,
+        isMenu: true,
+        activeMenu: 'pay_bill',
+      }}
+    />
+  );
+}
+
+PayBillOptions.propTypes = {
+  onBack: PropTypes.func,
+};
+
+export default PayBillOptions;

@@ -1,0 +1,404 @@
+You are a code analysis expert.
+
+## TAGGING FRAMEWORK
+This is the Tagging framework that defines available functions:
+
+```javascript
+import { store } from 'onevzsoemfeframework/Storemfe';
+import basicDlObject from './dlStructure';
+import { getPaymentTypeLabel } from '../util/getBillPayment';
+
+// Custom hook for tagging
+const useTagging = () => {
+  // Use useRef to persist data across renders without causing reloads
+  // Helper to build defaultDL only when needed
+  const buildDefaultDL = (type = '', flow = '', isFlowNameUpdate = false) => {
+    const state = store.getState();
+    const peripheralsInfo = state?.peripheralsInfo?.appInitVars || {};
+    const userInfo = state?.billPay?.userData || {};
+    const scanInfo = state?.scan?.repLoginData?.data || {};
+    const commonDetails = state?.common || {};
+    const billType = state?.billPay?.billType || '';
+    const prepaidData = state?.billPay?.prePaidData || {};
+    const billData = state?.billPay?.billSummary || {};
+    const adaptiveData = state.common?.adaptiveLoginData;
+    const paymentData = commonDetails?.paymentData || {};
+
+    const defaultDL =
+      typeof structuredClone === 'function'
+        ? structuredClone(basicDlObject)
+        : JSON.parse(JSON.stringify(basicDlObject));
+
+    // Helper functions for each section
+    const setUserInfo = () => {
+      if (!userInfo?.mtn && !userInfo?.isFiosFlow) return;
+      const accountParts = userInfo?.accountNumber?.split('-') || [];
+      defaultDL.user.accountLast2 = accountParts[0]?.slice(-2) || '';
+      defaultDL.user.acctId_unhashed = userInfo.accountNumber || '';
+
+      if (userInfo?.isFiosFlow) {
+        defaultDL.user.accountType = userInfo?.prepayAccount ? 'Prepay' : 'Postpay';
+        defaultDL.user.authType = 'logged in';
+        defaultDL.user.custId_unhashed = '';
+      } else {
+        defaultDL.user.accountType = userInfo?.accountType ?? '';
+        defaultDL.user.custId_unhashed = accountParts[0] || '';
+        defaultDL.user.id = billData?.mtnHashCode || '';
+        defaultDL.user.account = billData?.accountHashCode || '';
+      }
+
+      if (userInfo?.verifiedBy) {
+        defaultDL.user.authStatus = userInfo.verifiedBy === 'BLINDPAY' ? 'anonymous' : 'logged in';
+        if (userInfo.verifiedBy === 'MY_VERIZON') {
+          defaultDL.user.authType = adaptiveData?.listOfDevices?.[0]?.deviceType === 'BASIC' ? 'sms' : 'push';
+        } else if (userInfo.verifiedBy === 'ACCOUNT_PIN') {
+          defaultDL.user.authType = 'pin';
+        }
+      }
+    };
+
+    const setScanInfo = () => {
+      if (!Object.keys(scanInfo).length) return;
+      defaultDL.txn.agent = scanInfo.salesRepId ?? '';
+      defaultDL.txn.agentRole = scanInfo.details?.jobTitledId ?? '';
+    };
+
+    const setCustomerInfo = () => {
+      if (!Object.keys(userInfo).length) return;
+      defaultDL.user.customerType = userInfo.customerType ?? '';
+      defaultDL.user.customerRole = userInfo.amRole ?? '';
+    };
+
+    const setPrepaidInfo = () => {
+      if (!Object.keys(prepaidData).length) return;
+      defaultDL.user.id = prepaidData.hashed_mdn ?? '';
+    };
+
+    const setPaymentInfo = () => {
+      if (!Object.keys(paymentData).length) return;
+      if (paymentData.orderTotal) {
+        defaultDL.txn.paymentAmt = Number(paymentData.orderTotal);
+        defaultDL.txn.total = paymentData.orderTotal;
+        defaultDL.txn.taxAmt = prepaidData?.taxInfo?.total_fee_amount ?? '';
+      }
+      if (paymentData?.paymentType) {
+        defaultDL.txn.paymentType = getPaymentTypeLabel(paymentData.paymentType);
+      }
+      if (billType) {
+        defaultDL.env.businessUnit = billType === 'mobile' ? 'Wireless' : 'Wireline';
+      }
+      defaultDL.txn.id =
+        paymentData?.order_number ||
+        paymentData?.orderNumber ||
+        paymentData?.orderNum ||
+        paymentData?.responseDetail?.pmtConfirmationNumber ||
+        paymentData?.orders?.[0]?.orderNum ||
+        defaultDL.txn.id;
+    };
+
+    const setPageLoadInfo = () => {
+      if (type !== 'trackPageLoad') return;
+      const machineType = peripheralsInfo.isPaypodEnabled ? 'paypod' : 'kiosk';
+      const machineName = peripheralsInfo.machineName ?? '';
+      const registerNumber = peripheralsInfo.registerNumber ?? '';
+      defaultDL.page.formData = `bpkMachReg^|t:${machineType}|m:${machineName}|r:${registerNumber} |`;
+    };
+
+    const setFlowName = () => {
+      if (type !== 'trackPageLoad' || !isFlowNameUpdate) return;
+      const isFiosFlow = !!userInfo?.isFiosFlow;
+      const menu = commonDetails?.menuSelected;
+      if (menu === 'payBill') {
+        defaultDL.page.flow = `${isFiosFlow ? 'pay bill home internet' : 'pay bill mobile'}-${flow}`;
+      } else if (menu === 'completeOrder') {
+        defaultDL.page.flow = `Complete order-${flow}`;
+      } else {
+        defaultDL.page.flow = `Scan And Go-${flow}`;
+      }
+    };
+
+    // Call helpers
+    setUserInfo();
+    setScanInfo();
+    setCustomerInfo();
+    setPrepaidInfo();
+    setPaymentInfo();
+    setPageLoadInfo();
+    setFlowName();
+
+    // Set outletId always
+    defaultDL.txn.outletId = peripheralsInfo.locationCode ?? '';
+    defaultDL.page.channelSession = localStorage.getItem('bpkUUID') ?? '';
+
+    return defaultDL;
+  };
+
+  const trackPageLoad = ({ pageName = '', flow = '', subFlow = '', event = '', isFlowNameUpdate = false } = {}) => {
+    try {
+      const model = buildDefaultDL('trackPageLoad', flow, isFlowNameUpdate);
+      model.page.name = pageName;
+      if (!isFlowNameUpdate) {
+        model.page.flow = flow;
+      }
+      model.page.subFlow = subFlow;
+      model.event.value = event;
+      window.vzdl = model;
+      window.coreData = window.coreData ?? [];
+      window.coreData.push({
+        task: 'emit',
+        event: 'pageView',
+      });
+    } catch (e) {
+      console.error('Error in site catalyst ', e);
+    }
+  };
+
+  const trackPageNotification = (name = '', message = '', id = '') => {
+    try {
+      const data = buildDefaultDL();
+      window.vzdl = data;
+      window.coreData = window.coreData ?? [];
+      window.coreData.push({
+        task: 'emit',
+        event: 'notify',
+        params: {
+          name,
+          message,
+          error: true,
+          id,
+        },
+      });
+    } catch (e) {
+      console.log('Error in site catalyst', e);
+    }
+  };
+
+  const trackPageChange = (selectorIdOrClass = '', message = '') => {
+    try {
+      const data = buildDefaultDL();
+      window.vzdl = data;
+      window.coreData.push({
+        task: 'emit',
+        event: 'openView',
+        params: {
+          selector: selectorIdOrClass,
+          message,
+        },
+      });
+    } catch (e) {
+      console.log('Error in site catalyst', e);
+    }
+  };
+
+  return { trackPageLoad, trackPageNotification, trackPageChange };
+};
+
+export { useTagging };
+
+```
+
+## TARGET FILE
+This is the file we want to add tagging to:
+
+```javascript
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import Left50Right50Layout from '../../Layout/Layout';
+import {
+  getPrepayBalanceDue,
+  getPrepayTitleMessage,
+  getPrepayPlanDetails,
+  getReNewPlanDetails,
+  getFiosSubTitleMessage,
+  isPrePayMaxLimitReached,
+} from '../../util/balanceReviewFunctions';
+import PayAmountDue from '../../Common/AmountDue/RightContent';
+import balanceImg from '../../Images/amountBalance.svg';
+import LazyVideo from '../../Common/LazyVedio';
+import balnceVideo from '../../Images/balance_screen.webm';
+import { VideoWrapper } from './style';
+
+
+function AmountDue({ handlePageChange }) {
+  const billData = useSelector((state) => state?.billPay?.billSummary);
+  const prepaidData = useSelector((state) => state?.billPay?.prePaidData);
+  const userData = useSelector((state) => state.billPay?.userData || {});
+  const configData = useSelector((state) => state?.common?.configData);
+
+  useEffect(() => {
+    let flow = 'Pay bill Mobile';
+    let event = 'e466';
+    if (userData?.isFiosFlow) {
+      flow = 'Pay bill home Internet';
+      event = userData?.mtnLoginIndLength === 10 ? 'e466' : 'e467';
+    }
+    const payload = {
+      pageName: 'bill summary',
+      flow,
+      event,
+    };
+    trackPageLoad(payload);
+  }, []);
+
+  const continueToPay = () => {
+    handlePageChange('payOptions');
+  };
+
+  const date = new Date(billData?.lastPaymentDate);
+  const options = { month: 'short', day: '2-digit' };
+  const formattedDate = date.toLocaleDateString('en-US', options);
+
+  let dueDate;
+  let dueAmt = '';
+  let title = 'You are upto date and paid full.';
+  let subTitle = '';
+  let disabledBtn = false;
+  let dueDateLine2 = '';
+  let dueDateLine3 = '';
+  let dueDateLine4 = '';
+  if (userData?.amRole === 'prepay') {
+    const isActive = prepaidData?.plan_status?.toLowerCase() === 'active';
+    const totalAmountDue = getPrepayBalanceDue(prepaidData);
+    title = getPrepayTitleMessage(totalAmountDue);
+    dueAmt = `$${prepaidData?.available_balance}`;
+    dueDate = '';
+    dueDateLine2 = (
+      <div className='plan-info-prepay'>
+        <span className='head-bold'>Monthly Plan</span>
+        <span className='head-bold'>${parseFloat(totalAmountDue).toFixed(2)}</span>
+      </div>
+    );
+    dueDateLine3 = getPrepayPlanDetails(isActive, prepaidData);
+    dueDateLine4 = getReNewPlanDetails(totalAmountDue, prepaidData, isActive);
+    const defaultPrepayPaymentAmount = parseFloat(configData?.defaultPrepayPaymentAmount);
+
+    const maxPayment = isPrePayMaxLimitReached(
+      prepaidData?.available_balance,
+      totalAmountDue,
+      defaultPrepayPaymentAmount,
+    );
+    if (maxPayment) {
+      disabledBtn = true;
+      dueDateLine3 = `You've paid the maximum allowed amount this month.`;
+    }
+  } else if (userData?.isFiosFlow) {
+    const liveBalane = parseFloat(billData?.liveBalance);
+    title = `Here’s your balance.`;
+    dueDateLine3 = getFiosSubTitleMessage(liveBalane, billData?.currentDueDate);
+    if (billData?.liveBalance < parseFloat(configData?.defaultPostpayPaymentLimit) * -1) {
+      disabledBtn = true;
+      dueDateLine4 = `Please exit to complete your transaction.`;
+      dueDateLine2 = `There's nothing due at this time.`;
+    }
+    dueAmt = `$${Math.abs(liveBalane).toFixed(2)}`;
+  } else if (parseFloat(billData?.balanceDueAmount) > 0) {
+    title = 'Here’s your amount due.';
+    subTitle = ``;
+    dueDate = `You paid ${billData?.lastPaymentAmount} on ${formattedDate}`;
+    dueAmt = `$${billData?.balanceDueAmount}`;
+  } else if (parseFloat(billData?.balanceDueAmount) === 0) {
+    title = 'Here’s your balance.';
+    const lastPaymentDate = new Date(billData?.lastPaymentDate);
+    const formattedLastPaymentDate = lastPaymentDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
+    dueAmt = `$${Math.abs(parseFloat(billData?.balanceDueAmount)).toFixed(2)}`;
+    dueDate = `You paid ${billData?.lastPaymentAmount} on ${formattedLastPaymentDate} .`;
+    subTitle = ``;
+  } else if (parseFloat(billData?.balanceDueAmount) < 0) {
+    dueAmt = `$${Math.abs(parseFloat(billData?.balanceDueAmount)).toFixed(2)}`;
+    const lastPaymentDate = new Date(billData?.lastPaymentDate);
+    const formattedLastPaymentDate = lastPaymentDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
+    dueDate = `You paid your due amount of ${billData?.lastPaymentAmount} on ${formattedLastPaymentDate}.`;
+    title = 'Here’s your credit balance';
+    subTitle = ``;
+
+    if (billData?.balanceDueAmount < parseFloat(configData?.defaultPostpayPaymentLimit) * -1) {
+      dueDateLine2 = `There's nothing due at this time.`;
+      dueDateLine3 = `You've paid the maximum allowed amount this month.`;
+      dueDateLine4 = `Please exit to complete your transaction.`;
+      disabledBtn = true;
+    }
+  }
+
+  const rightContent = {
+    title,
+    subTitle,
+    btnText: 'Continue',
+  };
+
+  return (
+    <Left50Right50Layout
+      leftContent={
+        <VideoWrapper>
+          <LazyVideo src={balnceVideo} poster={balanceImg} />
+        </VideoWrapper>
+      }
+      rightContent={
+        <PayAmountDue
+          dueDetail={rightContent}
+          submitCallBackFunction={continueToPay}
+          dueAmount={dueAmt}
+          dueDate={dueDate}
+          disabledBtn={disabledBtn}
+          dueDateLine2={dueDateLine2}
+          dueDateLine3={dueDateLine3}
+          dueDateLine4={dueDateLine4}
+        />
+      }
+      isBackButton={false}
+      isMenu
+      isImageLeft
+      /* onBack={() => onBackAction()} // Temporarily hiding back button as per requirement */
+    />
+  );
+}
+
+AmountDue.propTypes = {
+  // onBack: PropTypes.func,
+  handlePageChange: PropTypes.func,
+};
+
+export default AmountDue;
+
+```
+
+## TASK
+Analyze if the following tracking is ALREADY present in the target file:
+
+Function: trackPageLoad
+Instruction: {
+  "action": "page_load",
+  "event": "trackPageLoad",
+  "params": {
+    "pageName": "bill summary",
+    "flow": "Pay bill mobile",
+    "subFlow": "Summary Display",
+    "event": "BillSummary_Page_Load"
+  }
+}
+
+## DECISION RULES
+- Look for calls to: trackPageLoad
+- Check if it matches the intended purpose
+- Consider different code patterns and styles
+- Be strict: Only return true if tracking is clearly already there
+
+## ANSWER
+Return ONLY valid JSON (no markdown, no explanation):
+{
+  "already_tagged": true/false,
+  "reason": "brief explanation"
+}
+
+For example:
+{
+  "already_tagged": true,
+  "reason": "trackPageLoad already called in useEffect with correct parameters"
+}
+
+or
+
+{
+  "already_tagged": false,
+  "reason": "No trackPageLoad found in file"
+}

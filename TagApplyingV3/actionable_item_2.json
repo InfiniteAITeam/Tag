@@ -1,0 +1,40 @@
+{
+  "src/pages/ExpressStore/PayBill/PayBillOptions/index.js:40-60": {
+    "description": "Payment options page load - Eligible payment methods display",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook for payment options initialization",
+    "suggestedParameters": {
+      "selector": "paybill-options-load",
+      "message": "Payment options page loaded",
+      "pageName": "payment options",
+      "flow": "Pay bill mobile"
+    }
+  },
+
+
+  "src/pages/ExpressStore/PayBill/PayBillSignIns/index.js:15-25": {
+    "description": "PayBill signin page load - Login options display",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount",
+    "suggestedParameters": {
+      "selector": "paybill-signin-load",
+      "message": "Pay bill signin page loaded",
+      "pageName": "Pay bill signin",
+      "flow": "Pay bill mobile"
+    }
+  },
+  "src/pages/ExpressStore/PayBill/PayBillType/index.js:9-13": {
+    "description": "Bill type selection page load - Mobile/HomeInternet options",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount",
+    "suggestedParameters": {
+      "selector": "bill-type-load",
+      "message": "Bill type selection page loaded",
+      "pageName": "Bill type",
+      "flow": "BPK Bill type"
+    }
+  }
+}

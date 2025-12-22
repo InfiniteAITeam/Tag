@@ -1,0 +1,401 @@
+[
+  {
+    "file": "src/pages/CMSKiosk/Landing/LandingPage.js",
+    "description": "CMS Landing page initialization - Application parameter setup",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount for app initialization",
+    "suggestedParameters": {
+      "pageName": "CMS Landing",
+      "flow": "CMS initialization",
+      "subFlow": "App Setup",
+      "event": "AppInit_Application_Info"
+    }
+  },
+  {
+    "file": "src/pages/CMSKiosk/Landing/LandingPage.js",
+    "description": "App initialization event handler - Shell application setup",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "HandleEvent callback for shell app initialization",
+    "suggestedParameters": {
+      "pageName": "CMS Landing",
+      "flow": "Shell AppInit",
+      "subFlow": "Shell Setup",
+      "event": "AppInit_Event_Trigger"
+    }
+  },
+  {
+    "file": "src/pages/CMSKiosk/Landing/LandingPage.js",
+    "description": "User activity detection - First interaction trigger",
+    "eventType": "click",
+    "suggestedFunction": "trackPageChange",
+    "context": "Activity handler for mouse/keyboard/touch events",
+    "suggestedParameters": {
+      "selectorIdOrClass": "cms-user-activity",
+      "message": "User initiated activity on CMS landing"
+    }
+  },
+  {
+    "file": "src/pages/CMSKiosk/Landing/LandingPage.js",
+    "description": "Idle timeout management - Screen timeout reset logic",
+    "eventType": "other",
+    "suggestedFunction": "trackPageNotification",
+    "context": "useEffect for idle timer reset on user inactivity",
+    "suggestedParameters": {
+      "name": "cms-idle-timeout",
+      "message": "CMS idle timeout triggered",
+      "id": "Screen_Burn_Timeout"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/Common/SessionTimerWithContext/index.js",
+    "description": "Session timeout event handler - Logout on idle",
+    "eventType": "navigation",
+    "suggestedFunction": "trackPageChange",
+    "context": "useEffect for pre-logout action registration",
+    "suggestedParameters": {
+      "selectorIdOrClass": "session-timeout-logout",
+      "message": "Session timeout - User logged out and navigated to home"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/Landing/Components/Header/index.js",
+    "description": "Language switch handler - English/Spanish toggle",
+    "eventType": "click",
+    "suggestedFunction": "trackPageChange",
+    "context": "onClick handler for language toggle button",
+    "suggestedParameters": {
+      "selectorIdOrClass": "language-switch-btn",
+      "message": "Header language switch clicked"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/Landing/Components/Header/index.js",
+    "description": "Rep login navigation - Authentication flow initiation",
+    "eventType": "navigation",
+    "suggestedFunction": "trackPageChange",
+    "context": "onClick handler for rep login button",
+    "suggestedParameters": {
+      "selectorIdOrClass": "rep-login-btn",
+      "message": "Rep login clicked"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/Landing/Components/Header/index.js",
+    "description": "Cart navigation - ScanAndGo accessory cart access",
+    "eventType": "navigation",
+    "suggestedFunction": "trackPageChange",
+    "context": "onClick handler for shopping cart icon",
+    "suggestedParameters": {
+      "selectorIdOrClass": "cart-navigation-btn",
+      "message": "Shopping cart clicked"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/Landing/Components/MenuItems/index.js",
+    "description": "Menu tile selection - Navigation handler with hardware check",
+    "eventType": "click",
+    "suggestedFunction": "trackPageChange",
+    "context": "Click handler for menu tiles (PayBill, CompleteOrder, ScanAndGo)",
+    "suggestedParameters": {
+      "selectorIdOrClass": "menu-tile-select",
+      "message": "Menu tile clicked for flow selection"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/Landing/index.js",
+    "description": "Express Store landing page load - Initialization and state cleanup",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount",
+    "suggestedParameters": {
+      "pageName": "BPK home landing",
+      "flow": "BPK visit",
+      "subFlow": "Landing Init",
+      "event": "Landing_Page_Load"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/Landing/index.js",
+    "description": "Store location data fetch - API call on mount",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect for store details retrieval",
+    "suggestedParameters": {
+      "pageName": "BPK home landing",
+      "flow": "Store Initialization",
+      "subFlow": "Store Info Fetch",
+      "event": "Store_Info"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/PayBill/PayBillOptions/index.js",
+    "description": "Payment options page load - Eligible payment methods display",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook for payment options initialization",
+    "suggestedParameters": {
+      "pageName": "payment options",
+      "flow": "Pay bill mobile",
+      "subFlow": "Payment Method Selection",
+      "event": "Paybill_Options_Load"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/PayBill/PayBillOptions/index.js",
+    "description": "Payment method selection - User chooses payment processor",
+    "eventType": "click",
+    "suggestedFunction": "trackPageChange",
+    "context": "handlePageChange function on tile click",
+    "suggestedParameters": {
+      "selectorIdOrClass": "payment-method-select",
+      "message": "Payment method selected"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/PayBill/PayBillSignIns/index.js",
+    "description": "PayBill signin page load - Login options display",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount",
+    "suggestedParameters": {
+      "pageName": "Pay bill signin",
+      "flow": "Pay bill mobile",
+      "subFlow": "Login Options",
+      "event": "PayBill_SignIn_Load"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/PayBill/PayBillType/index.js",
+    "description": "Bill type selection page load - Mobile/HomeInternet options",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount",
+    "suggestedParameters": {
+      "pageName": "Bill type",
+      "flow": "BPK Bill type",
+      "subFlow": "Bill Type Options",
+      "event": "BillType_Page_Load"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/PayBill/PayBillType/index.js",
+    "description": "Bill type selection - User selects Mobile or HomeInternet",
+    "eventType": "click",
+    "suggestedFunction": "trackPageChange",
+    "context": "handlePaymentSelection click handler on tile",
+    "suggestedParameters": {
+      "selectorIdOrClass": "bill-type-select",
+      "message": "Bill type selected"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/PayBill/index.js",
+    "description": "Payment type selection - User selects bill type (Mobile/HomeInternet)",
+    "eventType": "click",
+    "suggestedFunction": "trackPageChange",
+    "context": "handlePaymentSelection callback function",
+    "suggestedParameters": {
+      "selectorIdOrClass": "paybill-type-selection",
+      "message": "Payment type selected"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/PayBill/index.js",
+    "description": "Login option selection - User selects sign-in method",
+    "eventType": "click",
+    "suggestedFunction": "trackPageChange",
+    "context": "selectLoginOption callback function",
+    "suggestedParameters": {
+      "selectorIdOrClass": "login-option-select",
+      "message": "Login option selected"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/PayBill/NumberPad/index.js",
+    "description": "Pay bill number pad page load - Mobile/Account number entry",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount",
+    "suggestedParameters": {
+      "pageName": "pay bill",
+      "flow": "Pay bill mobile",
+      "subFlow": "Number Entry",
+      "event": "NumberPad_Page_Load"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/PayBill/NumberPad/index.js",
+    "description": "Number pad submission - API call with customer identifier",
+    "eventType": "validation",
+    "suggestedFunction": "trackPageNotification",
+    "context": "onContinue function for number validation and API call",
+    "suggestedParameters": {
+      "name": "numberpad-submit",
+      "message": "Number pad submitted for login options",
+      "id": "Paybill_type_mobile"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/PayBill/NumberPad/index.js",
+    "description": "Number pad API error handling - Invalid account/number error",
+    "eventType": "error",
+    "suggestedFunction": "trackPageNotification",
+    "context": "useEffect for API error handling",
+    "suggestedParameters": {
+      "name": "numberpad-error",
+      "message": "Number pad validation failed",
+      "id": "Login_Option_Details_Error"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/Cash/index.js",
+    "description": "Cash payment error handling - API failure tracking",
+    "eventType": "error",
+    "suggestedFunction": "trackPageNotification",
+    "context": "useEffect for payment error detection",
+    "suggestedParameters": {
+      "name": "cash-payment-error",
+      "message": "Cash payment error occurred",
+      "id": "Cash_Payment_Error"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/Cash/index.js",
+    "description": "Complete cash payment - Final amount submission",
+    "eventType": "click",
+    "suggestedFunction": "trackPageChange",
+    "context": "completeCashPayment async function for payment processing",
+    "suggestedParameters": {
+      "selectorIdOrClass": "cash-payment-submit",
+      "message": "Cash payment submitted"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/CreditCard/index.js",
+    "description": "Credit card flow initialization - Page selection based on balance",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook for menu selection and balance checking",
+    "suggestedParameters": {
+      "pageName": "Credit Card payment",
+      "flow": "Pay bill",
+      "subFlow": "Card Processing",
+      "event": "CreditCard_Init"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/Check/index.js",
+    "description": "Check payment flow initialization - Routing and account entry",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "Component state initialization for check payment",
+    "suggestedParameters": {
+      "pageName": "Check payment",
+      "flow": "Pay bill",
+      "subFlow": "Check Processing",
+      "event": "Check_Init"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/GiftCard/index.js",
+    "description": "Gift card flow initialization - Entry point selection",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "Component state initialization for gift card payment",
+    "suggestedParameters": {
+      "pageName": "Gift Card payment",
+      "flow": "Pay bill",
+      "subFlow": "GiftCard Processing",
+      "event": "GiftCard_Init"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/HealthCheckErrors/index.js",
+    "description": "Hardware health check error page load - Device status display",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount",
+    "suggestedParameters": {
+      "pageName": "Health check",
+      "flow": "BPK health check",
+      "subFlow": "Error Display",
+      "event": "HealthCheck_Error_Load"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/HealthCheckErrors/index.js",
+    "description": "Health check error recovery - Continue or exit options",
+    "eventType": "click",
+    "suggestedFunction": "trackPageChange",
+    "context": "handlePageChange callback for recovery selection",
+    "suggestedParameters": {
+      "selectorIdOrClass": "health-check-recovery",
+      "message": "Health check recovery action selected"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/ScanAndGo/index.js",
+    "description": "ScanAndGo flow initialization - Page routing based on search params",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "Component state initialization with search parameters",
+    "suggestedParameters": {
+      "pageName": "ScanAndGo",
+      "flow": "Accessory purchase",
+      "subFlow": "Flow Init",
+      "event": "ScanAndGo_Init"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/ScanAndGo/index.js",
+    "description": "ScanAndGo login option selection - OTP or Account PIN",
+    "eventType": "click",
+    "suggestedFunction": "trackPageChange",
+    "context": "selectLoginOption callback function",
+    "suggestedParameters": {
+      "selectorIdOrClass": "scan-login-option",
+      "message": "ScanAndGo login option selected"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/CompleteOrder/index.js",
+    "description": "Complete order flow initialization - Page routing from search params",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "Component state initialization",
+    "suggestedParameters": {
+      "pageName": "Complete Order",
+      "flow": "Order completion",
+      "subFlow": "Flow Init",
+      "event": "CompleteOrder_Init"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/Splash/index.js",
+    "description": "Splash screen initialization - Language detection and setup",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect for language initialization and domain detection",
+    "suggestedParameters": {
+      "pageName": "Splash",
+      "flow": "BPK initialization",
+      "subFlow": "Language Init",
+      "event": "Splash_Init"
+    }
+  },
+  {
+    "file": "src/pages/ExpressStore/SucessConfirmation/index.js",
+    "description": "Payment success confirmation - Confirmation page display",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook for payment confirmation tracking",
+    "suggestedParameters": {
+      "pageName": "Confirmation",
+      "flow": "Payment success",
+      "subFlow": "Confirmation Display",
+      "event": "Payment_Success_Confirm"
+    }
+  }
+]

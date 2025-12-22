@@ -1,0 +1,431 @@
+You are a code analysis expert.
+
+## TAGGING FRAMEWORK
+This is the Tagging framework that defines available functions:
+
+```javascript
+import { store } from 'onevzsoemfeframework/Storemfe';
+import basicDlObject from './dlStructure';
+import { getPaymentTypeLabel } from '../util/getBillPayment';
+
+// Custom hook for tagging
+const useTagging = () => {
+  // Use useRef to persist data across renders without causing reloads
+  // Helper to build defaultDL only when needed
+  const buildDefaultDL = (type = '', flow = '', isFlowNameUpdate = false) => {
+    const state = store.getState();
+    const peripheralsInfo = state?.peripheralsInfo?.appInitVars || {};
+    const userInfo = state?.billPay?.userData || {};
+    const scanInfo = state?.scan?.repLoginData?.data || {};
+    const commonDetails = state?.common || {};
+    const billType = state?.billPay?.billType || '';
+    const prepaidData = state?.billPay?.prePaidData || {};
+    const billData = state?.billPay?.billSummary || {};
+    const adaptiveData = state.common?.adaptiveLoginData;
+    const paymentData = commonDetails?.paymentData || {};
+
+    const defaultDL =
+      typeof structuredClone === 'function'
+        ? structuredClone(basicDlObject)
+        : JSON.parse(JSON.stringify(basicDlObject));
+
+    // Helper functions for each section
+    const setUserInfo = () => {
+      if (!userInfo?.mtn && !userInfo?.isFiosFlow) return;
+      const accountParts = userInfo?.accountNumber?.split('-') || [];
+      defaultDL.user.accountLast2 = accountParts[0]?.slice(-2) || '';
+      defaultDL.user.acctId_unhashed = userInfo.accountNumber || '';
+
+      if (userInfo?.isFiosFlow) {
+        defaultDL.user.accountType = userInfo?.prepayAccount ? 'Prepay' : 'Postpay';
+        defaultDL.user.authType = 'logged in';
+        defaultDL.user.custId_unhashed = '';
+      } else {
+        defaultDL.user.accountType = userInfo?.accountType ?? '';
+        defaultDL.user.custId_unhashed = accountParts[0] || '';
+        defaultDL.user.id = billData?.mtnHashCode || '';
+        defaultDL.user.account = billData?.accountHashCode || '';
+      }
+
+      if (userInfo?.verifiedBy) {
+        defaultDL.user.authStatus = userInfo.verifiedBy === 'BLINDPAY' ? 'anonymous' : 'logged in';
+        if (userInfo.verifiedBy === 'MY_VERIZON') {
+          defaultDL.user.authType = adaptiveData?.listOfDevices?.[0]?.deviceType === 'BASIC' ? 'sms' : 'push';
+        } else if (userInfo.verifiedBy === 'ACCOUNT_PIN') {
+          defaultDL.user.authType = 'pin';
+        }
+      }
+    };
+
+    const setScanInfo = () => {
+      if (!Object.keys(scanInfo).length) return;
+      defaultDL.txn.agent = scanInfo.salesRepId ?? '';
+      defaultDL.txn.agentRole = scanInfo.details?.jobTitledId ?? '';
+    };
+
+    const setCustomerInfo = () => {
+      if (!Object.keys(userInfo).length) return;
+      defaultDL.user.customerType = userInfo.customerType ?? '';
+      defaultDL.user.customerRole = userInfo.amRole ?? '';
+    };
+
+    const setPrepaidInfo = () => {
+      if (!Object.keys(prepaidData).length) return;
+      defaultDL.user.id = prepaidData.hashed_mdn ?? '';
+    };
+
+    const setPaymentInfo = () => {
+      if (!Object.keys(paymentData).length) return;
+      if (paymentData.orderTotal) {
+        defaultDL.txn.paymentAmt = Number(paymentData.orderTotal);
+        defaultDL.txn.total = paymentData.orderTotal;
+        defaultDL.txn.taxAmt = prepaidData?.taxInfo?.total_fee_amount ?? '';
+      }
+      if (paymentData?.paymentType) {
+        defaultDL.txn.paymentType = getPaymentTypeLabel(paymentData.paymentType);
+      }
+      if (billType) {
+        defaultDL.env.businessUnit = billType === 'mobile' ? 'Wireless' : 'Wireline';
+      }
+      defaultDL.txn.id =
+        paymentData?.order_number ||
+        paymentData?.orderNumber ||
+        paymentData?.orderNum ||
+        paymentData?.responseDetail?.pmtConfirmationNumber ||
+        paymentData?.orders?.[0]?.orderNum ||
+        defaultDL.txn.id;
+    };
+
+    const setPageLoadInfo = () => {
+      if (type !== 'trackPageLoad') return;
+      const machineType = peripheralsInfo.isPaypodEnabled ? 'paypod' : 'kiosk';
+      const machineName = peripheralsInfo.machineName ?? '';
+      const registerNumber = peripheralsInfo.registerNumber ?? '';
+      defaultDL.page.formData = `bpkMachReg^|t:${machineType}|m:${machineName}|r:${registerNumber} |`;
+    };
+
+    const setFlowName = () => {
+      if (type !== 'trackPageLoad' || !isFlowNameUpdate) return;
+      const isFiosFlow = !!userInfo?.isFiosFlow;
+      const menu = commonDetails?.menuSelected;
+      if (menu === 'payBill') {
+        defaultDL.page.flow = `${isFiosFlow ? 'pay bill home internet' : 'pay bill mobile'}-${flow}`;
+      } else if (menu === 'completeOrder') {
+        defaultDL.page.flow = `Complete order-${flow}`;
+      } else {
+        defaultDL.page.flow = `Scan And Go-${flow}`;
+      }
+    };
+
+    // Call helpers
+    setUserInfo();
+    setScanInfo();
+    setCustomerInfo();
+    setPrepaidInfo();
+    setPaymentInfo();
+    setPageLoadInfo();
+    setFlowName();
+
+    // Set outletId always
+    defaultDL.txn.outletId = peripheralsInfo.locationCode ?? '';
+    defaultDL.page.channelSession = localStorage.getItem('bpkUUID') ?? '';
+
+    return defaultDL;
+  };
+
+  const trackPageLoad = ({ pageName = '', flow = '', subFlow = '', event = '', isFlowNameUpdate = false } = {}) => {
+    try {
+      const model = buildDefaultDL('trackPageLoad', flow, isFlowNameUpdate);
+      model.page.name = pageName;
+      if (!isFlowNameUpdate) {
+        model.page.flow = flow;
+      }
+      model.page.subFlow = subFlow;
+      model.event.value = event;
+      window.vzdl = model;
+      window.coreData = window.coreData ?? [];
+      window.coreData.push({
+        task: 'emit',
+        event: 'pageView',
+      });
+    } catch (e) {
+      console.error('Error in site catalyst ', e);
+    }
+  };
+
+  const trackPageNotification = (name = '', message = '', id = '') => {
+    try {
+      const data = buildDefaultDL();
+      window.vzdl = data;
+      window.coreData = window.coreData ?? [];
+      window.coreData.push({
+        task: 'emit',
+        event: 'notify',
+        params: {
+          name,
+          message,
+          error: true,
+          id,
+        },
+      });
+    } catch (e) {
+      console.log('Error in site catalyst', e);
+    }
+  };
+
+  const trackPageChange = (selectorIdOrClass = '', message = '') => {
+    try {
+      const data = buildDefaultDL();
+      window.vzdl = data;
+      window.coreData.push({
+        task: 'emit',
+        event: 'openView',
+        params: {
+          selector: selectorIdOrClass,
+          message,
+        },
+      });
+    } catch (e) {
+      console.log('Error in site catalyst', e);
+    }
+  };
+
+  return { trackPageLoad, trackPageNotification, trackPageChange };
+};
+
+export { useTagging };
+
+```
+
+## TARGET FILE
+This is the file we want to add tagging to:
+
+```javascript
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { LOG_LEVEL } from 'onevzsoemfeframework/Logging';
+import { mfeLogger } from '../../../../modules/services/APIService/MfeLogger';
+import { setPaymentType } from '../../Slice/commonStoreSlice';
+import { usePeripheralNavigate, removeSearchParam } from '../../utils';
+import { useBPKAuditAPI } from '../../util/bpkAuditAPI';
+import GiftCard from '../../Images/gift_card_pay_option.svg';
+import Check from '../../Images/check_render_payoption.svg';
+import CreditCard from '../../Images/credit_card_pay_option.svg';
+import CardBill from '../../Common/CardBill';
+import CashIcon from '../../Images/cash_pay_options.svg';
+import { BALANCE_CREDIT_TEXT, BALANCE_DUE_TEXT } from '../../Constants/Constants';
+
+const TitleText = styled.div`
+  margin-top: 48px;
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 40px;
+  letter-spacing: 0.5px;
+`;
+
+const TitleInfo = styled.div`
+  font-family: Verizon-NHG-eDS, Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: 0.5px;
+`;
+
+const TileContainer = styled.div`
+  margin-top: 40px;
+`;
+function PayBillOptions({ onBack }) {
+  const [paymentOptionsList, setPaymentOptionsList] = useState([]);
+  const tileListOptions = [
+    {
+      id: 'CREDIT',
+      title: 'Credit/Debit Card',
+      subtitle: '',
+      image: CreditCard,
+      handleClick: () => handlePageChange('/credit-card'),
+    },
+    {
+      id: 'GIFT_CARD',
+      title: 'Verizon Gift Card',
+      subtitle: '',
+      image: GiftCard,
+      handleClick: () => handlePageChange('/gift-card'),
+    },
+    { id: 'CHECK', title: 'Check', subtitle: '', image: Check, handleClick: () => handlePageChange('/check') },
+    { id: 'CASH', title: 'Cash', subtitle: '', image: CashIcon, handleClick: () => handlePageChange('/cash') },
+  ];
+
+  const navigate = usePeripheralNavigate();
+  const { trackPageLoad } = useTagging();
+  const dispatch = useDispatch();
+  const { triggerAuditTransaction } = useBPKAuditAPI();
+  const isNOSFlow = useSelector((state) => state.common?.isNOSFlow);
+  const userData = useSelector((state) => state.billPay?.userData || {});
+  const prepaidData = useSelector((state) => state?.billPay?.prePaidData);
+  const cashDeviceStatus = useSelector((state) => state?.cashDevice?.status);
+  const billSummaryData = useSelector((state) => state?.billPay?.billSummary);
+  const { appInitVars: shellInitData } = useSelector((state) => state.peripheralsInfo);
+  const isFiosFlow = userData?.isFiosFlow || false;
+  const backLink = isNOSFlow && !isFiosFlow ? 'loginOptions' : 'amountDue';
+
+  useEffect(() => {
+    trackPageLoad({ pageName: 'payment options', flow: `Pay bill ${isFiosFlow ? 'home internet' : 'mobile'}` });
+    triggerAuditTransaction({ serviceAction: 'createnewtransaction' });
+  }, []);
+
+  const getPaymentTypesAllowed = (paymentRestrictions) => {
+    if (paymentRestrictions.cashOnly) {
+      if (paymentRestrictions.cashDeviceHealthStatus || shellInitData.isCashAcceptorConnected) {
+        setPaymentOptionsList([
+          { id: 'CASH', title: 'Cash', subtitle: '', image: CashIcon, handleClick: () => handlePageChange('/cash') },
+        ]);
+      } else {
+        setPaymentOptionsList([]);
+      }
+    } else {
+      let paymentTypes = ['CASH', 'CREDIT', 'CHECK', 'GIFT_CARD'];
+      /* istanbul ignore else */
+      if (!paymentRestrictions.cashDeviceHealthStatus || !shellInitData.isCashAcceptorConnected) {
+        paymentTypes = paymentTypes.filter((item) => item !== 'CASH');
+      }
+      /* istanbul ignore else */
+      if (paymentRestrictions.bankForbidden || paymentRestrictions.overpaymentReached || paymentRestrictions.isPrepay) {
+        paymentTypes = paymentTypes.filter((item) => item !== 'CHECK');
+      }
+      /* istanbul ignore else */
+      if (paymentRestrictions.creditForbidden || !shellInitData?.ptaEnabled) {
+        paymentTypes = paymentTypes.filter((item) => item !== 'CREDIT');
+      }
+      /* istanbul ignore else */
+      if (paymentRestrictions?.isFiosFlow) {
+        paymentTypes = paymentTypes.filter((item) => item !== 'GIFT_CARD');
+      }
+      const filteredTiles = tileListOptions.filter((tile) => paymentTypes.includes(tile.id));
+      mfeLogger(LOG_LEVEL.INFO, { action: `Paybill_Eligible_options`, value: filteredTiles });
+      setPaymentOptionsList(filteredTiles);
+    }
+  };
+
+  const getPaymentOptions = () => {
+    const paymentRestrictions = {
+      cashOnly:
+        billSummaryData?.isCashOnly === 'true' &&
+        billSummaryData?.isCashOnlyWithBankAccount === 'false' &&
+        billSummaryData?.isCashOnlyWithCreditCard === 'false',
+      cashDeviceHealthStatus:
+        cashDeviceStatus?.healthStatus?.toLowerCase() === 'up' || cashDeviceStatus?.healthStatus === undefined,
+      bankForbidden: billSummaryData?.isCashOnly === 'true' && billSummaryData?.isCashOnlyWithBankAccount === 'true',
+      creditForbidden: billSummaryData?.isCashOnly === 'true' && billSummaryData?.isCashOnlyWithCreditCard === 'true',
+      overpaymentReached:
+        parseFloat(billSummaryData?.balanceDueAmount) <= 0 ||
+        (isFiosFlow && parseFloat(billSummaryData?.liveBalance) <= 0),
+      isPrepay: userData?.amRole === 'prepay' || (isFiosFlow && userData?.prepayAccount),
+      isFiosFlow,
+    };
+    getPaymentTypesAllowed(paymentRestrictions);
+  };
+
+  const handlePageChange = (page) => {
+    navigate(page);
+    mfeLogger(LOG_LEVEL.INFO, { action: 'Paybill_Eligible_Options_Selected', value: page.slice(1) });
+    dispatch(setPaymentType(page.slice(1)));
+  };
+
+  useEffect(() => {
+    removeSearchParam('page');
+  }, []);
+
+  useEffect(() => {
+    getPaymentOptions();
+  }, [cashDeviceStatus, billSummaryData, shellInitData]);
+
+  return (
+    <CardBill
+      {...{
+        title: (
+          <>
+            <div>How would you like to pay?</div>
+            <TitleText>
+              {isFiosFlow && billSummaryData?.liveBalance && (
+                <strong>
+                  Due today: {parseFloat(billSummaryData?.liveBalance) < 0 && '-'}$
+                  {Math.abs(parseFloat(billSummaryData?.liveBalance)).toFixed(2)}
+                </strong>
+              )}
+              {!isNOSFlow && userData?.amRole && userData?.amRole !== 'prepay' && (
+                <strong>
+                  {billSummaryData?.balanceDueAmount < 0 ? BALANCE_CREDIT_TEXT : BALANCE_DUE_TEXT} $
+                  {Math.abs(parseFloat(billSummaryData?.balanceDueAmount)).toFixed(2)}
+                </strong>
+              )}
+              {!isNOSFlow && userData?.amRole === 'prepay' && (
+                <TileContainer>
+                  <TitleInfo>Available balance: ${prepaidData?.available_balance}</TitleInfo>
+                  <TitleInfo>Plan cost: ${parseFloat(prepaidData?.optimal_replenishment_amount).toFixed(2)}</TitleInfo>
+                </TileContainer>
+              )}
+            </TitleText>
+          </>
+        ),
+        tileList: paymentOptionsList,
+        onBack: () => {
+          onBack(`${backLink}`);
+        },
+        isBackButton: false,
+        isMenu: true,
+        activeMenu: 'pay_bill',
+      }}
+    />
+  );
+}
+
+PayBillOptions.propTypes = {
+  onBack: PropTypes.func,
+};
+
+export default PayBillOptions;
+
+```
+
+## TASK
+Analyze if the following tracking is ALREADY present in the target file:
+
+Function: trackPageLoad
+Instruction: {
+  "action": "page_load",
+  "event": "trackPageLoad",
+  "params": {
+    "selector": "paybill-options-load",
+    "message": "Payment options page loaded",
+    "pageName": "payment options",
+    "flow": "Pay bill mobile"
+  }
+}
+
+## DECISION RULES
+- Look for calls to: trackPageLoad
+- Check if it matches the intended purpose
+- Consider different code patterns and styles
+- Be strict: Only return true if tracking is clearly already there
+
+## ANSWER
+Return ONLY valid JSON (no markdown, no explanation):
+{
+  "already_tagged": true/false,
+  "reason": "brief explanation"
+}
+
+For example:
+{
+  "already_tagged": true,
+  "reason": "trackPageLoad already called in useEffect with correct parameters"
+}
+
+or
+
+{
+  "already_tagged": false,
+  "reason": "No trackPageLoad found in file"
+}

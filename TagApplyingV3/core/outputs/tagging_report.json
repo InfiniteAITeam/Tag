@@ -1,0 +1,45 @@
+{
+  "spec_file": "C:\\Users\\ramean3\\Desktop\\TestCodes\\TagApplied_V3\\actionable_item.json",
+  "repo_path": "C:\\Users\\ramean3\\Desktop\\TestCodes\\TagApplied_V3\\cloned_repo",
+  "tagging_utils_path": "C:\\Users\\ramean3\\Desktop\\TestCodes\\TagApplied_V3\\cloned_repo\\src\\pages\\ExpressStore\\Tagging",
+  "total_files": 1,
+  "files": [
+    {
+      "file": "src/pages/ExpressStore/PayBill/PayBillType/index.js",
+      "description": {
+        "file": "src/pages/ExpressStore/PayBill/PayBillType/index.js",
+        "description": "Bill type selection page load - Mobile/HomeInternet options",
+        "eventType": "page_load",
+        "suggestedFunction": "trackPageLoad",
+        "context": "useEffect hook on component mount",
+        "suggestedParameters": {
+          "pageName": "Bill type",
+          "flow": "BPK Bill type",
+          "subFlow": "Bill Type Options",
+          "event": "BillType_Page_Load"
+        }
+      },
+      "taggingInstructions": {
+        "sourceFile": "src/pages/ExpressStore/PayBill/PayBillType/index.js",
+        "description": "Bill type selection page load - Mobile/HomeInternet options",
+        "eventType": "page_load",
+        "trackingFunction": "trackPageLoad",
+        "objective": "Add page_load tracking to: Bill type selection page load - Mobile/HomeInternet options",
+        "taggingFrameworkPath": "../../Tagging",
+        "parameters": {
+          "pageName": "Bill type",
+          "flow": "BPK Bill type",
+          "subFlow": "Bill Type Options",
+          "event": "BillType_Page_Load"
+        }
+      }
+    }
+  ],
+  "missing_files": [],
+  "tagging_summary": {
+    "total_files_to_tag": 1,
+    "missing_files_count": 0,
+    "tagging_framework": "src/pages/ExpressStore/Tagging/ (index.js, dlStructure.js)",
+    "tagging_standard": "Adobe Analytics (eVar, events)"
+  }
+}

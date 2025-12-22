@@ -1,0 +1,36 @@
+{
+  "logs": [
+    {
+      "file": "C:\\Users\\ramean3\\Desktop\\TestCodes\\TagApplied_V3\\cloned_repo\\src\\pages\\ExpressStore\\PayBill\\PayBillType\\index.js",
+      "file_path": "src/pages/ExpressStore/PayBill/PayBillType/index.js",
+      "action": "page_load",
+      "event": "trackPageLoad",
+      "description": "Bill type selection page load - Mobile/HomeInternet options",
+      "suggested_event_name": "trackPageLoad",
+      "suggested_params": {
+        "pageName": "Bill type",
+        "flow": "BPK Bill type",
+        "subFlow": "Bill Type Options",
+        "event": "BillType_Page_Load"
+      },
+      "top_match": {
+        "line": 1
+      },
+      "result": {
+        "applied": true,
+        "reason": "Added trackPageLoad call with correct parameters in useEffect.",
+        "backup": "index.js.taggingai.bak"
+      }
+    }
+  ],
+  "stats": {
+    "total_items": 1,
+    "processed": 1,
+    "success": 1,
+    "failed": 0,
+    "skipped_already_tagged": 0,
+    "import_added": 0,
+    "hook_added": 0,
+    "tracking_added": 0
+  }
+}

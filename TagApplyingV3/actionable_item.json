@@ -1,0 +1,40 @@
+[
+  {
+    "file": "src/pages/ExpressStore/PayBill/PayBillType/index.js",
+    "description": "Bill type selection page load - Mobile/HomeInternet options",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount",
+    "suggestedParameters": {
+      "pageName": "Bill type AI",
+      "flow": "BPK Bill type",
+      "subFlow": "Bill Type Options",
+      "event": "BillType_Page_Load"
+    }
+  },
+    {
+    "file": "src/pages/ExpressStore/HealthCheckErrors/index.js",
+    "description": "Hardware health check error page load - Device status display",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount",
+    "suggestedParameters": {
+      "pageName": "Health check AI",
+      "flow": "BPK health check",
+      "subFlow": "Error Display",
+      "event": "HealthCheck_Error_Load"
+    }
+  },
+    {"file": "src/pages/ExpressStore/PayBill/NumberPad/index.js",
+    "description": "Pay bill number pad page load - Mobile/Account number entry",
+    "eventType": "page_load",
+    "suggestedFunction": "trackPageLoad",
+    "context": "useEffect hook on component mount",
+    "suggestedParameters": {
+      "pageName": "pay bill AI",
+      "flow": "Pay bill mobile",
+      "subFlow": "Number Entry",
+      "event": "NumberPad_Page_Load"
+    }
+  }
+]

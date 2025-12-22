@@ -1,0 +1,318 @@
+
+# TAGGING FRAMEWORK SOURCE CODE
+
+This is the actual React hook implementation from: `src/pages/ExpressStore/Tagging/index.js`
+
+```javascript
+import { store } from 'onevzsoemfeframework/Storemfe';
+import basicDlObject from './dlStructure';
+import { getPaymentTypeLabel } from '../util/getBillPayment';
+
+// Custom hook for tagging
+const useTagging = () => {
+  // Use useRef to persist data across renders without causing reloads
+  // Helper to build defaultDL only when needed
+  const buildDefaultDL = (type = '', flow = '', isFlowNameUpdate = false) => {
+    const state = store.getState();
+    const peripheralsInfo = state?.peripheralsInfo?.appInitVars || {};
+    const userInfo = state?.billPay?.userData || {};
+    const scanInfo = state?.scan?.repLoginData?.data || {};
+    const commonDetails = state?.common || {};
+    const billType = state?.billPay?.billType || '';
+    const prepaidData = state?.billPay?.prePaidData || {};
+    const billData = state?.billPay?.billSummary || {};
+    const adaptiveData = state.common?.adaptiveLoginData;
+    const paymentData = commonDetails?.paymentData || {};
+
+    const defaultDL =
+      typeof structuredClone === 'function'
+        ? structuredClone(basicDlObject)
+        : JSON.parse(JSON.stringify(basicDlObject));
+
+    // Helper functions for each section
+    const setUserInfo = () => {
+      if (!userInfo?.mtn && !userInfo?.isFiosFlow) return;
+      const accountParts = userInfo?.accountNumber?.split('-') || [];
+      defaultDL.user.accountLast2 = accountParts[0]?.slice(-2) || '';
+      defaultDL.user.acctId_unhashed = userInfo.accountNumber || '';
+
+      if (userInfo?.isFiosFlow) {
+        defaultDL.user.accountType = userInfo?.prepayAccount ? 'Prepay' : 'Postpay';
+        defaultDL.user.authType = 'logged in';
+        defaultDL.user.custId_unhashed = '';
+      } else {
+        defaultDL.user.accountType = userInfo?.accountType ?? '';
+        defaultDL.user.custId_unhashed = accountParts[0] || '';
+        defaultDL.user.id = billData?.mtnHashCode || '';
+        defaultDL.user.account = billData?.accountHashCode || '';
+      }
+
+      if (userInfo?.verifiedBy) {
+        defaultDL.user.authStatus = userInfo.verifiedBy === 'BLINDPAY' ? 'anonymous' : 'logged in';
+        if (userInfo.verifiedBy === 'MY_VERIZON') {
+          defaultDL.user.authType = adaptiveData?.listOfDevices?.[0]?.deviceType === 'BASIC' ? 'sms' : 'push';
+        } else if (userInfo.verifiedBy === 'ACCOUNT_PIN') {
+          defaultDL.user.authType = 'pin';
+        }
+      }
+    };
+
+    const setScanInfo = () => {
+      if (!Object.keys(scanInfo).length) return;
+      defaultDL.txn.agent = scanInfo.salesRepId ?? '';
+      defaultDL.txn.agentRole = scanInfo.details?.jobTitledId ?? '';
+    };
+
+    const setCustomerInfo = () => {
+      if (!Object.keys(userInfo).length) return;
+      defaultDL.user.customerType = userInfo.customerType ?? '';
+      defaultDL.user.customerRole = userInfo.amRole ?? '';
+    };
+
+    const setPrepaidInfo = () => {
+      if (!Object.keys(prepaidData).length) return;
+      defaultDL.user.id = prepaidData.hashed_mdn ?? '';
+    };
+
+    const setPaymentInfo = () => {
+      if (!Object.keys(paymentData).length) return;
+      if (paymentData.orderTotal) {
+        defaultDL.txn.paymentAmt = Number(paymentData.orderTotal);
+        defaultDL.txn.total = paymentData.orderTotal;
+        defaultDL.txn.taxAmt = prepaidData?.taxInfo?.total_fee_amount ?? '';
+      }
+      if (paymentData?.paymentType) {
+        defaultDL.txn.paymentType = getPaymentTypeLabel(paymentData.paymentType);
+      }
+      if (billType) {
+        defaultDL.env.businessUnit = billType === 'mobile' ? 'Wireless' : 'Wireline';
+      }
+      defaultDL.txn.id =
+        paymentData?.order_number ||
+        paymentData?.orderNumber ||
+        paymentData?.orderNum ||
+        paymentData?.responseDetail?.pmtConfirmationNumber ||
+        paymentData?.orders?.[0]?.orderNum ||
+        defaultDL.txn.id;
+    };
+
+    const setPageLoadInfo = () => {
+      if (type !== 'trackPageLoad') return;
+      const machineType = peripheralsInfo.isPaypodEnabled ? 'paypod' : 'kiosk';
+      const machineName = peripheralsInfo.machineName ?? '';
+      const registerNumber = peripheralsInfo.registerNumber ?? '';
+      defaultDL.page.formData = `bpkMachReg^|t:${machineType}|m:${machineName}|r:${registerNumber} |`;
+    };
+
+    const setFlowName = () => {
+      if (type !== 'trackPageLoad' || !isFlowNameUpdate) return;
+      const isFiosFlow = !!userInfo?.isFiosFlow;
+      const menu = commonDetails?.menuSelected;
+      if (menu === 'payBill') {
+        defaultDL.page.flow = `${isFiosFlow ? 'pay bill home internet' : 'pay bill mobile'}-${flow}`;
+      } else if (menu === 'completeOrder') {
+        defaultDL.page.flow = `Complete order-${flow}`;
+      } else {
+        defaultDL.page.flow = `Scan And Go-${flow}`;
+      }
+    };
+
+    // Call helpers
+    setUserInfo();
+    setScanInfo();
+    setCustomerInfo();
+    setPrepaidInfo();
+    setPaymentInfo();
+    setPageLoadInfo();
+    setFlowName();
+
+    // Set outletId always
+    defaultDL.txn.outletId = peripheralsInfo.locationCode ?? '';
+    defaultDL.page.channelSession = localStorage.getItem('bpkUUID') ?? '';
+
+    return defaultDL;
+  };
+
+  const trackPageLoad = ({ pageName = '', flow = '', subFlow = '', event = '', isFlowNameUpdate = false } = {}) => {
+    try {
+      const model = buildDefaultDL('trackPageLoad', flow, isFlowNameUpdate);
+      model.page.name = pageName;
+      if (!isFlowNameUpdate) {
+        model.page.flow = flow;
+      }
+      model.page.subFlow = subFlow;
+      model.event.value = event;
+      window.vzdl = model;
+      window.coreData = window.coreData ?? [];
+      window.coreData.push({
+        task: 'emit',
+        event: 'pageView',
+      });
+    } catch (e) {
+      console.error('Error in site catalyst ', e);
+    }
+  };
+
+  const trackPageNotification = (name = '', message = '', id = '') => {
+    try {
+      const data = buildDefaultDL();
+      window.vzdl = data;
+      window.coreData = window.coreData ?? [];
+      window.coreData.push({
+        task: 'emit',
+        event: 'notify',
+        params: {
+          name,
+          message,
+          error: true,
+          id,
+        },
+      });
+    } catch (e) {
+      console.log('Error in site catalyst', e);
+    }
+  };
+
+  const trackPageChange = (selectorIdOrClass = '', message = '') => {
+    try {
+      const data = buildDefaultDL();
+      window.vzdl = data;
+      window.coreData.push({
+        task: 'emit',
+        event: 'openView',
+        params: {
+          selector: selectorIdOrClass,
+          message,
+        },
+      });
+    } catch (e) {
+      console.log('Error in site catalyst', e);
+    }
+  };
+
+  return { trackPageLoad, trackPageNotification, trackPageChange };
+};
+
+export { useTagging };
+
+```
+
+---
+
+## HOW TO USE
+
+1. **Understand what functions exist** by reading the code above
+2. **Determine what to import** based on what functions you'll call
+3. **Determine what to destructure from useTagging()** based on your needs
+4. **Add calls with correct parameters** based on the function signatures
+
+This is the SOURCE OF TRUTH. Do NOT invent functions or parameters.
+
+
+---
+
+## TARGET FILE (the file you need to modify)
+
+**Path**: `src\pages\ExpressStore\PayBill\PayBillType\index.js`
+
+```javascript
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { usePeripheralNavigate } from '../../utils';
+import CardBill from '../../Common/CardBill';
+function PayBillType({ handlePaymentSelection }) {
+  const navigate = usePeripheralNavigate();
+
+  return (
+    <CardBill
+      data-testid='payBill-testId'
+      {...{
+        onBack: () => {
+          navigate('/home');
+        },
+        isBackButton: true,
+        isMenu: true,
+        title: 'What type of bill do you want to pay?',
+        tileList: [
+          { title: 'Mobile', subtitle: '', icon: '', handleClick: () => handlePaymentSelection('mobile') },
+          { title: 'Home Internet', subtitle: '', icon: '', handleClick: () => handlePaymentSelection('homeInternet') },
+        ],
+      }}
+    />
+  );
+}
+
+PayBillType.propTypes = {
+  handlePaymentSelection: PropTypes.func,
+};
+
+export default PayBillType;
+
+```
+
+---
+
+## TASK REQUIREMENTS
+
+**What to add**:
+- Description: 
+- Action Type: page_load
+- Function to call: trackPageLoad
+- Parameters: {
+  "selector": "bill-type-load",
+  "message": "Bill type selection page loaded",
+  "pageName": "Bill type",
+  "flow": "BPK Bill type"
+}
+- Anchor Line: 1
+
+---
+
+## INSTRUCTIONS
+
+You are a code transformation assistant. Your job:
+
+1. **Read the Tagging framework code above** (the actual React hook)
+   - Understand what functions are exported
+   - Understand their signatures and parameters
+   - DO NOT invent functions
+
+2. **Read the target file above** (current React component)
+   - Check if the function is already imported
+   - Check if the function is already being called
+   - If already present → return UNCHANGED with reason
+
+3. **Add imports IF MISSING**:
+   - Read the framework: what is exported?
+   - Determine the correct relative path based on target file location
+   - Add import statement if not present
+
+4. **Add hook call IF MISSING**:
+   - Read the framework: what does useTagging() return?
+   - Only destructure functions you'll use
+   - Place after other const declarations
+
+5. **Add tracking call based on event type**:
+   - Read the framework: what are the parameters?
+   - Use EXACTLY the parameters from instruction above
+   - Determine where to place it (useEffect? handler? catch block?)
+   - DO NOT invent code
+
+6. **Return JSON result**:
+   ```json
+   {
+     "applied": true/false,
+     "reason": "explanation",
+     "updated_file": "full file content here"
+   }
+   ```
+
+---
+
+## KEY RULES
+
+- **Framework is source of truth** - use what's in the code above
+- **NO hardcoding** - let the actual framework guide your decisions
+- **Preserve existing code** - don't modify unrelated parts
+- **Idempotent** - if already applied, return unchanged
+- **Correct parameters** - use exactly what's in the instruction, not generic placeholders

@@ -1,0 +1,31 @@
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { usePeripheralNavigate } from '../../utils';
+import CardBill from '../../Common/CardBill';
+function PayBillType({ handlePaymentSelection }) {
+  const navigate = usePeripheralNavigate();
+
+  return (
+    <CardBill
+      data-testid='payBill-testId'
+      {...{
+        onBack: () => {
+          navigate('/home');
+        },
+        isBackButton: true,
+        isMenu: true,
+        title: 'What type of bill do you want to pay?',
+        tileList: [
+          { title: 'Mobile', subtitle: '', icon: '', handleClick: () => handlePaymentSelection('mobile') },
+          { title: 'Home Internet', subtitle: '', icon: '', handleClick: () => handlePaymentSelection('homeInternet') },
+        ],
+      }}
+    />
+  );
+}
+
+PayBillType.propTypes = {
+  handlePaymentSelection: PropTypes.func,
+};
+
+export default PayBillType;

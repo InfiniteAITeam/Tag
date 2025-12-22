@@ -1,0 +1,23 @@
+{
+  "items": [
+    {
+      "file": "C:\\Users\\ramean3\\Desktop\\TestCodes\\TagApplied_V3\\cloned_repo\\src\\pages\\ExpressStore\\PayBill\\PayBillType\\index.js",
+      "file_path": "src/pages/ExpressStore/PayBill/PayBillType/index.js",
+      "action": "page_load",
+      "event": "trackPageLoad",
+      "description": "Bill type selection page load - Mobile/HomeInternet options",
+      "suggested_event_name": "trackPageLoad",
+      "suggested_params": {
+        "pageName": "Bill type",
+        "flow": "BPK Bill type",
+        "subFlow": "Bill Type Options",
+        "event": "BillType_Page_Load"
+      },
+      "top_match": {
+        "line": 1
+      }
+    }
+  ],
+  "spec_version": "2.1",
+  "description": "Auto-generated from tagging_report.json - Smart LLM-Aware Format"
+}
